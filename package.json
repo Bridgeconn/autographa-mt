@@ -17,7 +17,7 @@
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
-    "test:lint": "eslint .",
+    "lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
     "predeploy": "cd example && npm install && npm run build",
@@ -25,7 +25,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo \"[Husky] pre-commit\""
+      "pre-commit": "npm run lint && echo \"pre-commit\"",
+      "pre-push": "npm run lint && echo \"pre-push\""
     }
   },
   "peerDependencies": {
@@ -57,6 +58,9 @@
   ],
   "dependencies": {
     "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "axios": "^0.21.1",
+    "chokidar": "^3.5.1",
     "husky": "^6.0.0"
   }
 }

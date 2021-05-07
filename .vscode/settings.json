@@ -12,7 +12,7 @@
 	"javascript.updateImportsOnFileMove.enabled": "always",
 	"eslint.alwaysShowStatus": true,
 	"eslint.codeAction.disableRuleComment": {},
-	"eslint.codeAction.showDocumentation": {},
+	"eslint.codeAction.showDocumentation": {}, 
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},

@@ -14,7 +14,7 @@
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
-    "prepare": "run-s build",
+    "prepare": "run-s build && husky install",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
     "lint": "eslint .",
@@ -22,12 +22,6 @@
     "test:watch": "react-scripts test --env=jsdom",
     "predeploy": "cd example && npm install && npm run build",
     "deploy": "gh-pages -d example/build"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && echo \"pre-commit\"",
-      "pre-push": "npm run lint && echo \"pre-push\""
-    }
   },
   "peerDependencies": {
     "react": "^16.0.0"
@@ -46,6 +40,8 @@
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-standard": "^4.0.1",
     "gh-pages": "^2.2.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
     "microbundle-crl": "^0.13.10",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.4",
@@ -60,7 +56,9 @@
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
-    "chokidar": "^3.5.1",
-    "husky": "^6.0.0"
+    "chokidar": "^3.5.1"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
   }
 }

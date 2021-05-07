@@ -1,10 +1,15 @@
-import React from 'react'
+import React from 'react';
+import { ApplicationBar, BibleDropDown } from 'autographa-mt';
 
-import { ExampleComponent } from 'autographa-mt'
-import 'autographa-mt/dist/index.css'
+import 'autographa-mt/dist/index.css';
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
-}
+  return (
+    <div>
+      <ApplicationBar />
+      <BibleDropDown />
+    </div>
+  );
+};
 
-export default App
+export default App;

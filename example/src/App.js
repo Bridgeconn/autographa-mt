@@ -1,13 +1,16 @@
-import React from 'react';
-import { ApplicationBar, BibleDropDown } from 'autographa-mt';
+import React, { useState } from 'react';
+import { ApplicationBar, BibleDropDown, LanguageSelect } from 'autographa-mt';
 
 import 'autographa-mt/dist/index.css';
 
 const App = () => {
+  const [sourceLanguage, setSourceLanguage] = useState('');
+  console.log(sourceLanguage);
   return (
     <div>
       <ApplicationBar />
       <BibleDropDown />
+      <LanguageSelect onChange={setSourceLanguage} width={300} />
     </div>
   );
 };

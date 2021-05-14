@@ -20,7 +20,8 @@
     "cypress:run": "cypress run",
     "nyc:report": "nyc report --reporter=json-summary --reporter=text",
     "test": "start-test 6060 cypress:run && npm run nyc:report",
-    "create-coverage-badge": "bash scripts/create-badge-json.sh"
+    "create-coverage-badge": "bash scripts/create-badge-json.sh",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
@@ -45,9 +46,19 @@
     "babel-plugin-istanbul": "^5.2.0",
     "cross-env": "^6.0.3",
     "css-loader": "^3.2.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.23.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-react": "^7.23.2",
     "file-loader": "^4.2.0",
+    "husky": "^6.0.0",
     "istanbul-lib-coverage": "^2.0.5",
+    "lint-staged": "^11.0.0",
     "nyc": "^14.1.1",
+    "prettier": "^2.3.0",
     "start-server-and-test": "^1.10.6",
     "style-loader": "^1.0.0",
     "url-loader": "^2.1.0",
@@ -62,5 +73,9 @@
   "main": "dist/index.js",
   "files": [
     "dist/*"
-  ]
+  ],
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
+  }
 }

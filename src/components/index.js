@@ -1,3 +1,3 @@
-export { default as ApplicationBar } from './ApplicationBar';
-export { default as BibleDropDown } from './BibleDropDown';
-export { default as LanguageSelect } from './LanguageSelect';
+export { default as HelloName } from './hello-name';
+export { default as HelloNamesUl } from './hello-names-ul';
+export { default as HelloNamesList } from './hello-names-list';

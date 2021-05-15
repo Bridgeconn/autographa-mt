@@ -10,13 +10,9 @@ const sections = [
     content: 'README.md',
   },
   {
-    name: 'Greetings',
+    name: 'Project List View',
     components: () => {
-      const componentNames = [
-        'hello-name',
-        'hello-names-ul',
-        'hello-names-list',
-      ];
+      const componentNames = ['BibleDropDown', 'LanguageSelect'];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));
         return path.resolve(
@@ -27,40 +23,18 @@ const sections = [
       });
     },
   },
-  {
-    name: 'Core',
-    content: 'src/core/README.md',
-  },
-  {
-    name: 'MUI Themes',
-    content: 'src/MuiThemes.md',
-  },
 ];
-
 module.exports = {
   title: `${upperFirst(camelCase(name))} v${version}`,
   ribbon: {
-    url: repository.url,
+    url: repository,
     text: 'View on GitHub',
   },
   styles,
   theme,
-  getComponentPathLine: (componentPath) => {
-    const dirname = path.dirname(componentPath, '.js');
-    const file = dirname.split('/').slice(-1)[0];
-    const componentName = upperFirst(camelCase(file));
-    return `import { ${componentName} } from "${name}";`;
-  },
-  usageMode: 'expand',
-  exampleMode: 'expand',
-  pagePerSection: true,
   sections,
+  skipComponentsWithoutExample: true,
   components: 'src/components/**/[A-Z]*.js',
-  defaultExample: true,
-  moduleAliases: {
-    'rsg-example': path.resolve(__dirname, 'src'),
-  },
-  version,
   webpackConfig: {
     module: {
       rules: [
@@ -68,10 +42,6 @@ module.exports = {
           test: /\.jsx?$/,
           exclude: /node_modules/,
           loader: 'babel-loader',
-        },
-        {
-          test: /\.css$/,
-          loader: 'style-loader!css-loader',
         },
       ],
     },

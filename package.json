@@ -4,7 +4,7 @@
   "description": "An RCL for the machine translation mode inside the Autographa application.",
   "author": "Bridgeconn",
   "license": "MIT",
-  "repository": "Bridgeconn/autographa-mt",
+  "repository": "https://github.com/Bridgeconn/autographa-mt.git",
   "engines": {
     "node": ">=4"
   },

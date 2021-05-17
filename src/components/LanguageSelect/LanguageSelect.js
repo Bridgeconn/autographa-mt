@@ -14,13 +14,15 @@ export default function LanguageSelect(props) {
   return (
     <Box style={{ width: props.width || 300 }}>
       <Select
-        onChange={(option) => props.onChange((option && option.code) || '')}
+        onChange={(option) => props.onChange(option || '')}
         options={languages}
         getOptionValue={(option) => option.code}
         getOptionLabel={(option) => option.language}
-        placeholder='Select Language'
+        placeholder={languages ? 'Select Language' : 'Loading'}
         isSearchable
         isClearable
+        isLoading={!languages}
+        isDisabled={!languages}
       />
     </Box>
   );

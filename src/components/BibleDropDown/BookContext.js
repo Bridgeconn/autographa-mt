@@ -23,7 +23,7 @@ const BookContextProvider = (props) => {
 };
 
 BookContextProvider.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export default BookContextProvider;

@@ -1,29 +1,21 @@
-# autographa-mt
+# autographa-mt RCL
 
 > An RCL for the machine translation mode inside the Autographa application.
 
-[![NPM](https://img.shields.io/npm/v/autographa-mt.svg)](https://www.npmjs.com/package/autographa-mt) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+## Prerequisites
 
-## Install
+You will need to ensure Node.js and yarn are already installed.
 
-```bash
-npm install --save autographa-mt
-```
+- For Node.js see [https://nodejs.org/](https://nodejs.org/)
+- For yarn run `npm install -g yarn`
 
-## Usage
+## Installation and Running the Project Locally
 
-```jsx
-import React, { Component } from 'react'
-
-import MyComponent from 'autographa-mt'
-import 'autographa-mt/dist/index.css'
-
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
-}
-```
+1. Install the npm dependencies with `yarn`
+1. Run the Styleguide with `yarn start`
+1. Ensure that the Styleguide is running by visiting `localhost:6060` on your web browser
+1. Modify the code and documentation in your code editor and check out the Styleguide
+   - Update the styleguide.config.js to match your new component names
 
 ## License
 

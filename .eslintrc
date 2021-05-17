@@ -1,27 +1,28 @@
 {
-  "parser": "babel-eslint",
-  "extends": [
-    "standard",
-    "standard-react",
-    "plugin:prettier/recommended",
-    "prettier/standard",
-    "prettier/react"
-  ],
   "env": {
-    "node": true
+    "browser": true,
+    "es2021": true
   },
+  "extends": [
+      "plugin:react/recommended",
+      "standard",
+      "prettier"
+  ],
   "parserOptions": {
-    "ecmaVersion": 2020,
-    "ecmaFeatures": {
-      "legacyDecorators": true,
-      "jsx": true
-    }
+      "ecmaFeatures": {
+          "jsx": true
+      },
+      "ecmaVersion": 12,
+      "sourceType": "module"
   },
   "settings": {
     "react": {
-      "version": "16"
+      "version": "17"
     }
   },
+  "plugins": [
+      "react"
+  ],
   "rules": {
     "space-before-function-paren": 0,
     "react/prop-types": 2,

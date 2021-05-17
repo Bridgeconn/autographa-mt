@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { API } from '../../store/api';
 import { Box } from '@material-ui/core';
 
-const LanguageSelect = (props) => {
+export default function LanguageSelect(props) {
   const [languages, setLanguages] = useState(null);
   useEffect(() => {
     API.get('languages?limit=10000').then(function (response) {
@@ -14,20 +14,19 @@ const LanguageSelect = (props) => {
   return (
     <Box style={{ width: props.width || 300 }}>
       <Select
-        onChange={(option) => props.onChange(option.code)}
+        onChange={(option) => props.onChange((option && option.code) || '')}
         options={languages}
         getOptionValue={(option) => option.code}
         getOptionLabel={(option) => option.language}
         placeholder='Select Language'
         isSearchable
+        isClearable
       />
     </Box>
   );
-};
+}
 
 LanguageSelect.propTypes = {
   onChange: PropTypes.func,
-  width: PropTypes.number
+  width: PropTypes.number,
 };
-
-export default LanguageSelect;

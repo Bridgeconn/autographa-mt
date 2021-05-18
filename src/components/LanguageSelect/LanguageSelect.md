@@ -20,7 +20,7 @@ useEffect(() => {
           <Typography variant='h5' component='h5' gutterBottom>
             {sourceLanguage.language}
           </Typography>
-          <Typography>Language Id : {sourceLanguage.code}</Typography>
+          <Typography>Language Id : {sourceLanguage.languageId}</Typography>
           <Typography>Language Code : {sourceLanguage.code}</Typography>
           <Typography>
             Script Direction: {sourceLanguage.scriptDirection}

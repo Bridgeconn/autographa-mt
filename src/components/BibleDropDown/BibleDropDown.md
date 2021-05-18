@@ -1,4 +1,4 @@
-### Simple example
+### Context API example
 
 ```js
 import BibleDropDown from './BibleDropDown';

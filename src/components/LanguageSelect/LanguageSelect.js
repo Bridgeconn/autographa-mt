@@ -7,7 +7,7 @@ import { Box } from '@material-ui/core';
 export default function LanguageSelect(props) {
   const [languages, setLanguages] = useState(null);
   useEffect(() => {
-    API.get('languages?limit=10000').then(function (response) {
+    API.get('languages?limit=10').then(function (response) {
       setLanguages(response.data);
     });
   }, []);

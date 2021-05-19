@@ -88,10 +88,11 @@ const ProjectListView = () => {
       <Typography
         component='div'
         style={{
-          right: '8rem',
-          position: 'absolute',
-          bottom: '32.5rem',
-          zIndex: 10,
+          right: '1%',
+          top: '1rem',
+          position: 'relative',
+          float: 'right',
+          zIndex: 101,
         }}
       >
         <Grid component='label' container alignItems='center' spacing={1}>
@@ -116,3 +117,15 @@ const ProjectListView = () => {
 };
 
 export default ProjectListView;
+
+// edit popup
+// top: 1rem;
+//     position: relative;
+//     float: left;
+//     right: -11%;
+
+// delete popup
+// top: 1rem;
+//     position: relative;
+//     right: -12%;
+//     float: right;

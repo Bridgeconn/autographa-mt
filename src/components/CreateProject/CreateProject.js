@@ -1,7 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -10,166 +9,92 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Checkbox from '@material-ui/core/Checkbox';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import axios from 'axios';
 import LanguageSelect from '../LanguageSelect/LanguageSelect.js';
+import axios from 'axios';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant='filled' {...props} />;
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: 200
-    }
-  }
-}));
-
 export default function CreateProject() {
-  const classes = useStyles();
 
   const [name, setName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('');
   const [targetLanguage, setTargetLanguage] = useState('');
   const [useDataForLearning, setUseDataForLearning] = useState(false);
-
-
-
-  const [all_languages, setAll_languages] = useState([]);
-  const [selectedsources, setSelectedSources] = useState('');
-  const [selectedlanguage, setSelectedlanguage] = useState('');
   const [responseStatus, setResponseStatus] = React.useState([]);
-  const [open, setOpen] = React.useState(false);
-  const [opensuccess, setopensuccess] = React.useState(false);
-
-
 
   const handleClose = () => {
-    setOpen(false);
+    setResponseStatus([false])
   };
 
-  const handlePostClose = () => {
-    setopensuccess(false);
+  const response = (state, message) => {
+    if(state==='open'){
+      setResponseStatus([true, false, 'error', "Can't choose same Source Language and Target Language"])
+    }
+    else if(state==='post_success'){
+      setResponseStatus([true, false, 'success', message])
+    }
+    else if(state==='post_error'){
+      setResponseStatus([true, false, 'error', message])
+    }
+    else{
+      console.log('error in post returns')
+    }
   };
-
-  const getLanguages = () => {
-    axios
-      .get('http://206.189.131.230/v2/languages')
-      .then((response) => {
-        setAll_languages(response.data);
-      })
-      .catch((error) => {
-        console.error('Something went wrong!', error);
-      });
-  };
-
-  useEffect(() => {
-    getLanguages();
-  }, []);
 
   const onClick = () => {
-    if (JSON.stringify(selectedlanguage) === JSON.stringify(selectedsources)) {
-      setOpen(true);
+    if (JSON.stringify(targetLanguage.languageId) === JSON.stringify(sourceLanguage.languageId)){
+      response('open')
     } else {
-      const data = {
+        const data = {
         projectName: name,
-        sourceLanguageCode: !selectedsources ? '' : selectedsources.code,
-        targetLanguageCode: !selectedlanguage ? '' : selectedlanguage.code,
+        sourceLanguageCode: !sourceLanguage ? '' : sourceLanguage.code,
+        targetLanguageCode: !targetLanguage ? '' : targetLanguage.code,
         useDataForLearning: useDataForLearning,
         stopwords: {
-          prepositions: [
-            'कोई',
-            'यह',
-            'इस',
-            'इसे',
-            'उस',
-            'कई',
-            'इसी',
-            'अभी',
-            'जैसे'
-          ],
-          postpositions: [
-            'के',
-            'का',
-            'में',
-            'की',
-            'है',
-            'और',
-            'से',
-            'हैं',
-            'को',
-            'पर'
-          ]
+          prepositions: ['कोई','यह','इस','इसे','उस','कई','इसी','अभी','जैसे'],
+          postpositions: ['के','का','में','की','है','और','से','हैं','को','पर']
         },
-        punctuations: [
-          ',',
-          '"',
-          '!',
-          '.',
-          ':',
-          ';',
-          '\n',
-          '\\',
-          '“',
-          '”',
-          '“',
-          '*',
-          '।',
-          '?',
-          ';',
-          "'",
-          '’',
-          '(',
-          ')',
-          '‘',
-          '—'
-        ],
+        punctuations: [',','"','!','.',':',';','\n','\\','“','”','“','*','।','?',';',"'",'’','(',')','‘','—'],
         active: true
-      };
+        };
 
-      axios
+        axios
         .post('http://206.189.131.230/v2/autographa/projects', data)
         .then((response) => {
-          setResponseStatus([response.data.message, 'success']);
+          response('post_success', response.data.message);
         })
         .catch((error) => {
-          setResponseStatus([error.response.data.error, 'error']);
+          response('post_error', error.response.data.error);
         });
-      setopensuccess(true);
-    }
+      }
   };
 
   const clearState = () => {
     setName('');
-    setSelectedlanguage('');
+    setSourceLanguage('');
+    setTargetLanguage('');
     setUseDataForLearning(false);
-    setSelectedSources('');
   };
-
-  const languageData = [];
-  if (all_languages != null) {
-    Object.values(all_languages).map((lang) => {
-      languageData.push({
-        label: lang.language,
-        value: lang.languageId,
-        code: lang.code
-      });
-    });
-  }
 
   const canBeSubmitted = () => {
     return (
       name.length > 0 &&
-      selectedsources instanceof Object &&
-      selectedlanguage instanceof Object
+      sourceLanguage instanceof Object &&
+      targetLanguage instanceof Object
     );
-    // }
   };
 
   const isEnabled = canBeSubmitted();
+
   return (
     <Grid container direction="row" spacing={1}>
+      <Snackbar open={responseStatus[0]} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={responseStatus[0]} severity={responseStatus[2]}>
+        {responseStatus[3]}
+        </Alert>
+      </Snackbar>
 
       <Grid item md={5} sm={12}  container justify="flex-start" alignItems="center" style={{paddingLeft:'80px'}}>
         <span style={{ fontSize: '16px' }}>Name</span>
@@ -187,23 +112,19 @@ export default function CreateProject() {
         </form>
       </Grid>
 
-
       <Grid item md={5} sm={12}  container justify="flex-start" alignItems="center" style={{paddingLeft:'80px'}}>
         <span style={{ fontSize: '16px' }}>Source Language</span>
       </Grid>
       <Grid item md={7} sm={12} container justify="flex-start" alignItems="flex-start">
-        <LanguageSelect onChange={setSourceLanguage} width={212} />
+        <LanguageSelect onChange={setSourceLanguage} width={212} value={sourceLanguage} />
       </Grid>
-
 
       <Grid item md={5} sm={12}  container justify="flex-start" alignItems="center" style={{paddingLeft:'80px'}}>
         <span style={{ fontSize: '16px' }}>Target Language</span>
       </Grid>
       <Grid item md={7} sm={12} container justify="flex-start" alignItems="flex-start">
-        <LanguageSelect onChange={setTargetLanguage} width={212} />
+        <LanguageSelect onChange={setTargetLanguage} width={212}  value={targetLanguage}/>
       </Grid>
-
-
 
       <Grid item md={12} sm={12}  container justify="space-evenly" alignItems="center" style={{paddingLeft:'80px', paddingRight:'190px', marginTop:'15px'}}>
         <Accordion>
@@ -240,16 +161,12 @@ export default function CreateProject() {
             </Accordion>
       </Grid>
 
-
-
       <Grid item md={5} sm={6}  container justify="flex-start" alignItems="center" style={{paddingLeft:'80px', marginTop:'15px'}}>
         <span style={{ fontSize: '14px' }}>Use Data For Learning</span>
       </Grid>
       <Grid item md={7} sm={8}  container justify="flex-start" alignItems="center" style={{marginTop:'15px'}}>
         <Checkbox inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} onChange={(e) => setUseDataForLearning(e.target.checked)}/>
       </Grid>
-    
-
 
       <Grid item md={3} sm={4}  container justify="flex-end" alignItems="center" style={{paddingLeft:'80px', marginTop:'20px', marginBottom:'20px'}}>
         <Button size='small' disabled={!isEnabled} variant='contained' color='primary' onClick={onClick}>
@@ -262,8 +179,6 @@ export default function CreateProject() {
         </Button>
       </Grid>
       <Grid item md={6} sm={4} container justify="flex-start" alignItems="flex-start"></Grid>
-
-
       
     </Grid>
   );

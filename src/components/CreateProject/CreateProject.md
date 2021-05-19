@@ -1,8 +1,7 @@
 This component helps to create new project.
 
-<!-- It uses react-select and fetches the list of languages from the vachan-api -->
 
-### Simple example
+### Create Project
 
 ```js
 

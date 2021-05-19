@@ -31,6 +31,6 @@ export default function LanguageSelect(props) {
 
 LanguageSelect.propTypes = {
   onChange: PropTypes.func,
-  value: PropTypes.object,
+  value: PropTypes.string,
   width: PropTypes.number,
 };

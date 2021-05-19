@@ -64,5 +64,5 @@ export default function ProjectListEdit(props) {
 }
 
 ProjectListEdit.propTypes = {
-  projectName: PropTypes.func,
+  projectName: PropTypes.string.isRequired,
 };

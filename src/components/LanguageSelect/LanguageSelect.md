@@ -34,7 +34,11 @@ useEffect(() => {
   );
 }, [sourceLanguage, setLanguageCard]);
 <>
-  <LanguageSelect onChange={setSourceLanguage} width={300} />
+  <LanguageSelect
+    onChange={setSourceLanguage}
+    width={300}
+    value={sourceLanguage}
+  />
   <Button
     variant='contained'
     color='primary'

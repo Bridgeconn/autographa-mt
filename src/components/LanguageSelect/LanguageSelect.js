@@ -7,7 +7,7 @@ import { Box } from '@material-ui/core';
 export default function LanguageSelect(props) {
   const [languages, setLanguages] = useState(null);
   useEffect(() => {
-    API.get('languages?limit=10').then(function (response) {
+    API.get('languages?limit=10000').then(function (response) {
       setLanguages(response.data);
     });
   }, []);
@@ -21,7 +21,6 @@ export default function LanguageSelect(props) {
         placeholder={languages ? 'Select Language' : 'Loading'}
         isSearchable
         isClearable
-        value={props.value}
         isLoading={!languages}
         isDisabled={!languages}
       />
@@ -31,6 +30,5 @@ export default function LanguageSelect(props) {
 
 LanguageSelect.propTypes = {
   onChange: PropTypes.func,
-  value: PropTypes.string,
   width: PropTypes.number,
 };

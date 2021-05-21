@@ -2,21 +2,41 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Checkbox from '@material-ui/core/Checkbox';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 import LanguageSelect from '../LanguageSelect/LanguageSelect.js';
 import { API } from '../../store/api';
+import SnackBar from '../SnackBar/SnackBar.js';
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant='filled' {...props} />;
-}
+import { makeStyles } from '@material-ui/core/styles';
 
-export default function CreateProject() {
+const useStyles = makeStyles({
+  gridLeft: {
+    paddingLeft: '80px',
+    alignItems: 'center',
+    fontSize: '16px',
+  },
+  gridRight: {
+    alignItems: 'center',
+    marginBottom: '10px',
+  },
+  dataLearn: {
+    paddingLeft: '80px',
+    alignItems: 'center',
+    marginTop: '20px',
+    fontSize: '14px',
+  },
+  checkbox: {
+    marginTop: '20px',
+  },
+  button: {
+    paddingLeft: '20px',
+    marginTop: '20px',
+    marginBottom: '20px',
+  },
+});
+
+export default function CreateProject(props) {
+  const classes = useStyles(props);
   const [name, setName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('');
   const [targetLanguage, setTargetLanguage] = useState('');
@@ -31,24 +51,20 @@ export default function CreateProject() {
     if (state === 'open') {
       setResponseStatus([
         true,
-        false,
         'error',
         "Can't choose same Source Language and Target Language",
       ]);
     } else if (state === 'post_success') {
-      setResponseStatus([true, false, 'success', message]);
+      setResponseStatus([true, 'success', message]);
     } else if (state === 'post_error') {
-      setResponseStatus([true, false, 'error', message]);
+      setResponseStatus([true, 'error', message]);
     } else {
       console.log('error in post returns');
     }
   };
 
-  const onClick = () => {
-    if (
-      JSON.stringify(targetLanguage.languageId) ===
-      JSON.stringify(sourceLanguage.languageId)
-    ) {
+  const onSave = () => {
+    if (targetLanguage.languageId === sourceLanguage.languageId) {
       snackbarMessage('open');
     } else {
       const data = {
@@ -56,54 +72,6 @@ export default function CreateProject() {
         sourceLanguageCode: !sourceLanguage ? '' : sourceLanguage.code,
         targetLanguageCode: !targetLanguage ? '' : targetLanguage.code,
         useDataForLearning: useDataForLearning,
-        stopwords: {
-          prepositions: [
-            'कोई',
-            'यह',
-            'इस',
-            'इसे',
-            'उस',
-            'कई',
-            'इसी',
-            'अभी',
-            'जैसे',
-          ],
-          postpositions: [
-            'के',
-            'का',
-            'में',
-            'की',
-            'है',
-            'और',
-            'से',
-            'हैं',
-            'को',
-            'पर',
-          ],
-        },
-        punctuations: [
-          ',',
-          '"',
-          '!',
-          '.',
-          ':',
-          ';',
-          '\n',
-          '\\',
-          '“',
-          '”',
-          '“',
-          '*',
-          '।',
-          '?',
-          ';',
-          "'",
-          '’',
-          '(',
-          ')',
-          '‘',
-          '—',
-        ],
         active: true,
       };
 
@@ -135,36 +103,13 @@ export default function CreateProject() {
   const isEnabled = canBeSubmitted();
 
   return (
-    <Grid container direction='row' spacing={1}>
-      <Snackbar
-        open={responseStatus[0]}
-        autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <Alert onClose={responseStatus[0]} severity={responseStatus[2]}>
-          {responseStatus[3]}
-        </Alert>
-      </Snackbar>
+    <Grid container direction='row'>
+      <SnackBar responseStatus={responseStatus} handleClose={handleClose} />
 
-      <Grid
-        item
-        md={5}
-        sm={12}
-        container
-        justify='flex-start'
-        alignItems='center'
-        style={{ paddingLeft: '80px' }}
-      >
-        <span style={{ fontSize: '16px' }}>Name</span>
+      <Grid className={classes.gridLeft} item md={5} sm={12} container>
+        <span>Name</span>
       </Grid>
-      <Grid
-        item
-        md={7}
-        sm={12}
-        container
-        justify='flex-start'
-        alignItems='flex-start'
-      >
+      <Grid className={classes.gridRight} item md={7} sm={12} container>
         <form noValidate autoComplete='off'>
           <TextField
             id='outlined-size-small'
@@ -177,25 +122,10 @@ export default function CreateProject() {
         </form>
       </Grid>
 
-      <Grid
-        item
-        md={5}
-        sm={12}
-        container
-        justify='flex-start'
-        alignItems='center'
-        style={{ paddingLeft: '80px' }}
-      >
-        <span style={{ fontSize: '16px' }}>Source Language</span>
+      <Grid className={classes.gridLeft} item md={5} sm={12} container>
+        <span>Source Language</span>
       </Grid>
-      <Grid
-        item
-        md={7}
-        sm={12}
-        container
-        justify='flex-start'
-        alignItems='flex-start'
-      >
+      <Grid className={classes.gridRight} item md={7} sm={12} container>
         <LanguageSelect
           onChange={setSourceLanguage}
           width={212}
@@ -203,25 +133,10 @@ export default function CreateProject() {
         />
       </Grid>
 
-      <Grid
-        item
-        md={5}
-        sm={12}
-        container
-        justify='flex-start'
-        alignItems='center'
-        style={{ paddingLeft: '80px' }}
-      >
-        <span style={{ fontSize: '16px' }}>Target Language</span>
+      <Grid className={classes.gridLeft} item md={5} sm={12} container>
+        <span>Target Language</span>
       </Grid>
-      <Grid
-        item
-        md={7}
-        sm={12}
-        container
-        justify='flex-start'
-        alignItems='flex-start'
-      >
+      <Grid item md={7} sm={12} container>
         <LanguageSelect
           onChange={setTargetLanguage}
           width={212}
@@ -229,130 +144,35 @@ export default function CreateProject() {
         />
       </Grid>
 
-      <Grid
-        item
-        md={12}
-        sm={12}
-        container
-        justify='space-evenly'
-        alignItems='center'
-        style={{
-          paddingLeft: '80px',
-          paddingRight: '190px',
-          marginTop: '15px',
-        }}
-      >
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel1a-content'
-            id='panel1a-header'
-          >
-            <span style={{ fontWeight: 'bold', fontSize: '14px' }}>
-              Advanced Options
-            </span>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Grid container item sm={12}>
-              <Grid item sm={12}>
-                <span style={{ fontWeight: 'bold', fontSize: '14px' }}>
-                  {' '}
-                  Stop Words
-                </span>
-              </Grid>
-              <Grid
-                item
-                sm={12}
-                style={{
-                  paddingLeft: '12px',
-                  fontSize: '14px',
-                  marginTop: '6px',
-                }}
-              >
-                <span> Pre Position - pre1, pre2, pre3...</span>
-              </Grid>
-              <Grid
-                item
-                sm={12}
-                style={{ paddingLeft: '12px', fontSize: '14px' }}
-              >
-                <span> Post Position - post1, post2, post3...</span>
-              </Grid>
-              <Grid item sm={12} style={{ marginTop: '6px' }}>
-                <span style={{ fontWeight: 'bold', fontSize: '14px' }}>
-                  {' '}
-                  Punctuations
-                </span>
-              </Grid>
-              <Grid
-                item
-                sm={12}
-                style={{
-                  paddingLeft: '12px',
-                  fontSize: '14px',
-                  marginTop: '6px',
-                }}
-              >
-                <span> [. , ; ' [ {} - @ ^ *</span>
-              </Grid>
-            </Grid>
-          </AccordionDetails>
-        </Accordion>
+      <Grid className={classes.dataLearn} item md={5} sm={6} container>
+        <span>Use Data For Learning</span>
       </Grid>
-
-      <Grid
-        item
-        md={5}
-        sm={6}
-        container
-        justify='flex-start'
-        alignItems='center'
-        style={{ paddingLeft: '80px', marginTop: '15px' }}
-      >
-        <span style={{ fontSize: '14px' }}>Use Data For Learning</span>
-      </Grid>
-      <Grid
-        item
-        md={7}
-        sm={8}
-        container
-        justify='flex-start'
-        alignItems='center'
-        style={{ marginTop: '15px' }}
-      >
+      <Grid className={classes.checkbox} item md={7} sm={8} container>
         <Checkbox
           inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
           onChange={(e) => setUseDataForLearning(e.target.checked)}
         />
       </Grid>
 
-      <Grid
-        item
-        md={3}
-        sm={4}
-        container
-        justify='flex-end'
-        alignItems='center'
-        style={{ paddingLeft: '80px', marginTop: '20px', marginBottom: '20px' }}
-      >
+      <Grid item md={3} sm={4} container justify='flex-end' alignItems='center'>
         <Button
           size='small'
           disabled={!isEnabled}
           variant='contained'
           color='primary'
-          onClick={onClick}
+          onClick={onSave}
         >
           Save
         </Button>
       </Grid>
       <Grid
+        className={classes.button}
         item
         md={3}
         sm={4}
         container
         justify='flex-start'
         alignItems='center'
-        style={{ paddingLeft: '20px', marginTop: '20px', marginBottom: '20px' }}
       >
         <Button
           size='small'
@@ -363,14 +183,6 @@ export default function CreateProject() {
           Cancel
         </Button>
       </Grid>
-      <Grid
-        item
-        md={6}
-        sm={4}
-        container
-        justify='flex-start'
-        alignItems='flex-start'
-      ></Grid>
     </Grid>
   );
 }

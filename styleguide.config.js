@@ -3,6 +3,7 @@ const upperFirst = require('lodash/upperFirst');
 const camelCase = require('lodash/camelCase');
 const { name, version, repository } = require('./package.json');
 const { styles, theme } = require('./styleguide.styles');
+const { Snackbar } = require('@material-ui/core');
 
 const sections = [
   {
@@ -12,7 +13,12 @@ const sections = [
   {
     name: 'Project',
     components: () => {
-      const componentNames = ['BibleDropDown', 'LanguageSelect', 'CreateProject'];
+      const componentNames = [
+        'BibleDropDown',
+        'SnackBar',
+        'LanguageSelect',
+        'CreateProject',
+      ];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));
         return path.resolve(

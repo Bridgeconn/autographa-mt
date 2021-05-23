@@ -8,24 +8,15 @@ const ProjectsContextProvider = (props) => {
   const [projects, setProjects] = useState([]);
   const [activeProjects, setActiveProjects] = useState(true);
   const [reload, setReload] = useState(true);
-  useEffect(() => {
-    if (reload === true) {
-      API.get(`/autographa/projects?active=${activeProjects}&limit=100`)
-        .then((response) => {
-          setProjects(response.data);
-          setReload(false);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [reload, setReload, activeProjects]);
 
   useEffect(() => {
     API.get(`/autographa/projects?active=${activeProjects}&limit=100`)
       .then((response) => {
         setProjects(response.data);
+        setReload(false);
       })
       .catch((err) => console.log(err));
-  }, [activeProjects]);
+  }, [reload, setReload, activeProjects]);
 
   return (
     <ProjectsContext.Provider

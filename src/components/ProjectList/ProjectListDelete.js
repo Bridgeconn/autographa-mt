@@ -4,10 +4,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import CancelIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import { API } from '../../store/api';
 import { ProjectsContext } from './ProjectContext';
 import PropTypes from 'prop-types';
@@ -36,7 +36,7 @@ export default function ProjectListDelete(props) {
       active: false,
     })
       .then((response) => {
-        console.log(response);
+        setOpen(false);
         setReload(true);
       })
       .catch((err) => console.log(err));
@@ -47,18 +47,19 @@ export default function ProjectListDelete(props) {
   };
 
   return (
-    <div>
-      <DeleteOutlinedIcon onClick={handleClickOpen} />
+    <>
+      <Tooltip title='Delete'>
+        <DeleteOutlinedIcon onClick={handleClickOpen} />
+      </Tooltip>
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby='alert-dialog-title'
         aria-describedby='alert-dialog-description'
       >
-        <DialogTitle id='alert-dialog-title'> </DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>
-            Are you sure you want to delete {props.projectName} project?
+            Are you sure you want to deactivate {props.projectName} project?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -71,7 +72,7 @@ export default function ProjectListDelete(props) {
               handleDelete(props.projectId);
             }}
           >
-            Delete
+            Deactivate
           </Button>
           <Button
             variant='contained'
@@ -85,7 +86,7 @@ export default function ProjectListDelete(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }
 

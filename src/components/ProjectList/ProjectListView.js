@@ -21,7 +21,7 @@ const columns = [
     label: 'Source Language',
     options: {
       filter: true,
-      sort: false,
+      sort: true,
     },
   },
   {
@@ -29,13 +29,14 @@ const columns = [
     label: 'Target Language',
     options: {
       filter: true,
-      sort: false,
+      sort: true,
     },
   },
   {
     name: '',
     options: {
       filter: false,
+      sort: false,
       // eslint-disable-next-line react/display-name
       customBodyRender: (value) => {
         return <ProjectListEdit projectName={value} />;
@@ -46,16 +47,12 @@ const columns = [
     name: '',
     options: {
       filter: false,
+      sort: false,
       // eslint-disable-next-line react/display-name
-      customBodyRender: (value) => {
-        const projectNameValue = value.split('/')[0];
-        const projectIdValue = value.split('/')[1];
+      customBodyRender: (value, row) => {
         return (
           <div>
-            <ProjectListDelete
-              projectName={projectNameValue}
-              projectId={projectIdValue}
-            />
+            <ProjectListDelete projectName={row.rowData[3]} projectId={value} />
           </div>
         );
       },
@@ -80,7 +77,7 @@ const ProjectListView = () => {
       project.sourceLanguage.language,
       project.targetLanguage.language,
       project.projectName,
-      project.projectName + '/' + project.projectId,
+      project.projectId,
     ];
   });
   return (
@@ -92,7 +89,6 @@ const ProjectListView = () => {
           top: '1rem',
           position: 'relative',
           float: 'right',
-          zIndex: 101,
         }}
       >
         <Grid component='label' container alignItems='center' spacing={1}>
@@ -117,15 +113,3 @@ const ProjectListView = () => {
 };
 
 export default ProjectListView;
-
-// edit popup
-// top: 1rem;
-//     position: relative;
-//     float: left;
-//     right: -11%;
-
-// delete popup
-// top: 1rem;
-//     position: relative;
-//     right: -12%;
-//     float: right;

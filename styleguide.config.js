@@ -10,14 +10,29 @@ const sections = [
     content: 'README.md',
   },
   {
-    name: 'Project',
+    name: 'Components',
     components: () => {
       const componentNames = [
         'BibleDropDown',
         'SnackBar',
         'LanguageSelect',
-        'CreateProject',
+        'SourceList',
+        'GetBibleBook',
       ];
+      return componentNames.map((componentName) => {
+        const filename = upperFirst(camelCase(componentName));
+        return path.resolve(
+          __dirname,
+          `src/components/${componentName}`,
+          `${filename}.js`
+        );
+      });
+    },
+  },
+  {
+    name: 'Project',
+    components: () => {
+      const componentNames = ['CreateProject'];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));
         return path.resolve(

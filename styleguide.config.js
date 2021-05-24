@@ -12,7 +12,7 @@ const sections = [
   {
     name: 'Project List View',
     components: () => {
-      const componentNames = ['BibleDropDown', 'LanguageSelect'];
+      const componentNames = ['BibleDropDown', 'LanguageSelect', 'ProjectList'];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));
         return path.resolve(

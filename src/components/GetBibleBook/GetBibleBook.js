@@ -6,13 +6,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 export default function GetBibleBook(props) {
   const bibleData = props.bookData;
 
-  const [state, setState] = React.useState({
-    // checkedA: true,
-    // checkedB: true,
-    // checkedF: true,
-    // checkedG: true,
-  });
-
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };

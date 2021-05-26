@@ -9,7 +9,6 @@ export default function SourceList(props) {
   useEffect(() => {
     API.get('sources').then(function (response) {
       setSourceLanguages(response.data);
-      // console.log('ssssssssssssssssss', response.data);
     });
   }, []);
   return (

@@ -1,6 +1,7 @@
-### Context API example
-
 ```js
+import { useState } from 'react';
 import BibleDropDown from './BibleDropDown';
-<BibleDropDown />;
+
+const [bookName, setBookName] = useState([]);
+<BibleDropDown value={bookName} onChange={setBookName} />;
 ```

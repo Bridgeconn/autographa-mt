@@ -6,9 +6,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import { Button, Checkbox, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import PropTypes from 'prop-types';
 import { BookContext } from './BookContext';
 
@@ -42,21 +39,10 @@ export default function BibleBooks(props) {
   const { value, onChange } = props;
   const [bookList, setBookList] = React.useState(value);
   const [open, setOpen] = React.useState(false);
-  const [snackOpen, setSnackOpen] = React.useState(false);
 
   const closeBookListing = () => {
     onChange(bookList);
-    console.log('test');
     setOpen(false);
-    setSnackOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnackOpen(false);
   };
 
   const handleChange = (e) => {
@@ -80,7 +66,11 @@ export default function BibleBooks(props) {
       const checked = bookList.includes(book) ? true : '';
       return (
         <Grid item xs={2} key={i}>
-          <Button size='sm' variant='contained' className={classes.bookButton}>
+          <Button
+            size='small'
+            variant='contained'
+            className={classes.bookButton}
+          >
             <FormControlLabel
               className={classes.label}
               control={
@@ -130,30 +120,6 @@ export default function BibleBooks(props) {
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        open={snackOpen}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message={bookList.map((book, i) => (
-          <span key={i}>{book.toUpperCase()}&nbsp;</span>
-        ))}
-        action={
-          <React.Fragment>
-            <IconButton
-              size='small'
-              aria-label='close'
-              color='inherit'
-              onClick={handleClose}
-            >
-              <CloseIcon fontSize='small' />
-            </IconButton>
-          </React.Fragment>
-        }
-      />
     </React.Fragment>
   );
 }

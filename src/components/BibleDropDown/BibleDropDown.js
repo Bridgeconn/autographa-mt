@@ -11,7 +11,7 @@ export default function BibleDropDown(props) {
   );
 }
 
-BibleBooks.propTypes = {
+BibleDropDown.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.array,
 };

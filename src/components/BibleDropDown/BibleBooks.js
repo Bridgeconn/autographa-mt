@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,19 +10,12 @@ import PropTypes from 'prop-types';
 import { BookContext } from './BookContext';
 
 const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
   bookButton: {
     width: 90,
     padding: '0 8px',
   },
   bookCard: {
     width: 700,
-  },
-  margin: {
-    margin: theme.spacing(1),
   },
   checkBox: {
     padding: 5,
@@ -41,7 +34,13 @@ export default function BibleBooks(props) {
   const [open, setOpen] = React.useState(false);
 
   const closeBookListing = () => {
-    onChange(bookList);
+    const data = [];
+    books.forEach((book) => {
+      if (bookList.includes(book.bookCode)) {
+        data.push(book.bookCode);
+      }
+    });
+    onChange(data);
     setOpen(false);
   };
 
@@ -57,12 +56,12 @@ export default function BibleBooks(props) {
     setBookList(books);
   };
 
-  const displayOldBooks = () => {
-    const Books = [];
-    for (const i in books) {
-      Books.push(books[i].bookCode);
-    }
-    return Books.map((book, i) => {
+  useEffect(() => {
+    setBookList(value);
+  }, [value]);
+  const displayBooks = () => {
+    return books.map((bookObject, i) => {
+      const book = bookObject.bookCode;
       const checked = bookList.includes(book) ? true : '';
       return (
         <Grid item xs={2} key={i}>
@@ -95,19 +94,14 @@ export default function BibleBooks(props) {
 
   return (
     <React.Fragment>
-      <Button
-        size='sm'
-        variant='contained'
-        color='primary'
-        onClick={handleSelectBooks}
-      >
+      <Button variant='contained' color='primary' onClick={handleSelectBooks}>
         BOOKS
       </Button>
       <Dialog open={open} className={classes.bookCard} maxWidth='md'>
         <DialogContent>
           <Typography variant='h5'>SELECT BOOKS</Typography>
           <Grid container item spacing={1}>
-            {displayOldBooks()}
+            {displayBooks()}
           </Grid>
         </DialogContent>
         <DialogActions>

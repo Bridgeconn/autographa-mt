@@ -1,76 +1,124 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import { Button, Checkbox, Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
 import { BookContext } from './BookContext';
-import { bibleChapters } from '../../store/bibleData';
 
 const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
+  bookButton: {
+    width: 90,
+    padding: '0 8px',
+  },
+  bookCard: {
+    width: 700,
+  },
+  checkBox: {
+    padding: 5,
+  },
+  label: {
+    marginRight: 0,
+    width: 70,
   },
 }));
 
-export default function BibleBooks() {
+export default function BibleBooks(props) {
   const classes = useStyles();
-  const [book, setBook] = React.useState('');
-  const [chapter, setChapter] = React.useState('');
-  const [chapterList, setChapterList] = React.useState([]);
-
   const { books } = useContext(BookContext);
+  const { value, onChange } = props;
+  const [bookList, setBookList] = React.useState(value);
+  const [open, setOpen] = React.useState(false);
 
-  const bookChanged = (event) => {
-    setBook(event.target.value);
-    const bookId = event.currentTarget.getAttribute('data-bookid');
-    const chapters = bibleChapters[bookId];
-    setChapterList(new Array(chapters).fill(0).map((_, i) => i + 1));
+  const closeBookListing = () => {
+    const data = [];
+    books.forEach((book) => {
+      if (bookList.includes(book.bookCode)) {
+        data.push(book.bookCode);
+      }
+    });
+    onChange(data);
+    setOpen(false);
   };
-  const chapterChanged = (event) => {
-    setChapter(event.target.value);
+
+  const handleChange = (e) => {
+    const checkedName = e.target.name;
+    const books = [...bookList];
+    if (books.includes(checkedName)) {
+      const bookIndex = books.indexOf(checkedName);
+      books.splice(bookIndex, 1);
+    } else {
+      books.push(checkedName);
+    }
+    setBookList(books);
+  };
+
+  useEffect(() => {
+    setBookList(value);
+  }, [value]);
+  const displayBooks = () => {
+    return books.map((bookObject, i) => {
+      const book = bookObject.bookCode;
+      const checked = bookList.includes(book) ? true : '';
+      return (
+        <Grid item xs={2} key={i}>
+          <Button
+            size='small'
+            variant='contained'
+            className={classes.bookButton}
+          >
+            <FormControlLabel
+              className={classes.label}
+              control={
+                <Checkbox
+                  className={classes.checkBox}
+                  checked={checked}
+                  name={book}
+                  onClick={handleChange}
+                />
+              }
+              label={book}
+            />
+          </Button>
+        </Grid>
+      );
+    });
+  };
+
+  const handleSelectBooks = () => {
+    setOpen(true);
   };
 
   return (
     <React.Fragment>
-      <FormControl variant='outlined' className={classes.formControl}>
-        <InputLabel id='book-label'>Book</InputLabel>
-        <Select
-          labelId='book-label'
-          id='demo-simple-select-outlined'
-          value={book}
-          onChange={bookChanged}
-          label='Book'
-        >
-          {books && books.length > 0
-            ? books.map((book, i) => (
-                <MenuItem value={book.short} key={i} data-bookid={book.book_id}>
-                  {book.short}
-                </MenuItem>
-              ))
-            : ''}
-        </Select>
-      </FormControl>
-      {chapterList.length !== 0 ? (
-        <FormControl variant='outlined' className={classes.formControl}>
-          <InputLabel id='chapter-label'>Chapter</InputLabel>
-          <Select
-            labelId='chapter-label'
-            value={chapter}
-            onChange={chapterChanged}
-            label='Chapter'
+      <Button variant='contained' color='primary' onClick={handleSelectBooks}>
+        BOOKS
+      </Button>
+      <Dialog open={open} className={classes.bookCard} maxWidth='md'>
+        <DialogContent>
+          <Typography variant='h5'>SELECT BOOKS</Typography>
+          <Grid container item spacing={1}>
+            {displayBooks()}
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={closeBookListing}
+            variant='contained'
+            color='secondary'
           >
-            {chapterList.map((chapterItem) => (
-              <MenuItem value={chapterItem} key={chapterItem}>
-                {chapterItem}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      ) : (
-        ''
-      )}
+            Done
+          </Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 }
+
+BibleBooks.propTypes = {
+  onChange: PropTypes.func,
+  value: PropTypes.array,
+};

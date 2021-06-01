@@ -25,7 +25,11 @@ const [bookName, setBookName] = useState([]);
 const classes = useStyles();
 
 <>
-  <BibleDropDown value={bookName} onChange={setBookName} />
+  <BibleDropDown
+    value={bookName}
+    onChange={setBookName}
+    buttonText='SELECT BOOKS'
+  />
   <Button
     className={classes.button}
     variant='contained'

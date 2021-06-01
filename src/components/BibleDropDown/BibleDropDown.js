@@ -12,6 +12,7 @@ export default function BibleDropDown(props) {
 }
 
 BibleDropDown.propTypes = {
-  onChange: PropTypes.func,
-  value: PropTypes.array,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.array.isRequired,
+  buttonText: PropTypes.string,
 };

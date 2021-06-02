@@ -1,76 +1,185 @@
-import React, { useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import React, { useContext, useEffect } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import { Button, Checkbox, Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
 import { BookContext } from './BookContext';
-import { bibleChapters } from '../../store/bibleData';
+import { green } from '@material-ui/core/colors';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+const GreenCheckbox = withStyles({
+  root: {
+    // padding: 5,
+    padding: '0 5px',
+    '&$checked': {
+      color: green[600],
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color='default' {...props} />);
 
 const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
+  bookButton: {
+    padding: '0 8px',
+    width: '71px',
+  },
+  bookCard: {
+    width: 580,
+  },
+  label: {
+    marginRight: 0,
+    width: 60,
+  },
+  labelSelect: {
+    marginRight: 20,
+    paddingLeft: '58px',
+    width: 150,
   },
 }));
 
-export default function BibleBooks() {
+export default function BibleBooks(props) {
   const classes = useStyles();
-  const [book, setBook] = React.useState('');
-  const [chapter, setChapter] = React.useState('');
-  const [chapterList, setChapterList] = React.useState([]);
-
   const { books } = useContext(BookContext);
+  const { value, onChange, buttonText } = props;
+  const [bookList, setBookList] = React.useState(value);
+  const [open, setOpen] = React.useState(false);
 
-  const bookChanged = (event) => {
-    setBook(event.target.value);
-    const bookId = event.currentTarget.getAttribute('data-bookid');
-    const chapters = bibleChapters[bookId];
-    setChapterList(new Array(chapters).fill(0).map((_, i) => i + 1));
+  const closeBookListing = () => {
+    const data = [];
+    books.forEach((book) => {
+      if (bookList.includes(book.bookCode)) {
+        data.push(book.bookCode);
+      }
+    });
+    onChange(data);
+    setOpen(false);
   };
-  const chapterChanged = (event) => {
-    setChapter(event.target.value);
+
+  const handleChange = (e) => {
+    const checkedName = e.target.name;
+    const books = [...bookList];
+    if (books.includes(checkedName)) {
+      const bookIndex = books.indexOf(checkedName);
+      books.splice(bookIndex, 1);
+    } else {
+      books.push(checkedName);
+    }
+    setBookList(books);
+  };
+
+  useEffect(() => {
+    setBookList(value);
+  }, [value]);
+
+  const displayBooks = () => {
+    return books.map((bookObject, i) => {
+      const book = bookObject.bookCode;
+      const checked = bookList.includes(book) ? true : '';
+      return (
+        <Grid item xs={2} key={i}>
+          <Button
+            size='small'
+            variant='outlined'
+            className={classes.bookButton}
+          >
+            <FormControlLabel
+              className={classes.label}
+              control={
+                <GreenCheckbox
+                  icon={<CheckBoxOutlineBlankIcon fontSize='small' />}
+                  checkedIcon={<CheckBoxIcon fontSize='small' />}
+                  name={book}
+                  checked={checked}
+                  onClick={handleChange}
+                />
+              }
+              // label={book}
+              label={<span style={{ fontSize: 15 }}>{book}</span>}
+            />
+          </Button>
+        </Grid>
+      );
+    });
+  };
+
+  const handleSelectAll = (e) => {
+    const checkedName = e.target.checked;
+    const Books = [];
+    if (checkedName === true) {
+      for (const i in books) {
+        Books.push(books[i].bookCode);
+      }
+    }
+    setBookList(Books);
+  };
+
+  const displaySelectAll = () => {
+    const checked = bookList.length === books.length ? true : '';
+    return (
+      <FormControlLabel
+        className={classes.labelSelect}
+        label={<Typography variant='h6'>Select All</Typography>}
+        labelPlacement='start'
+        control={
+          <GreenCheckbox
+            icon={<CheckBoxOutlineBlankIcon fontSize='small' />}
+            checkedIcon={<CheckBoxIcon fontSize='small' />}
+            onClick={handleSelectAll}
+            checked={checked}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+          />
+        }
+      />
+    );
+  };
+
+  const handleSelectBooks = () => {
+    setOpen(true);
   };
 
   return (
     <React.Fragment>
-      <FormControl variant='outlined' className={classes.formControl}>
-        <InputLabel id='book-label'>Book</InputLabel>
-        <Select
-          labelId='book-label'
-          id='demo-simple-select-outlined'
-          value={book}
-          onChange={bookChanged}
-          label='Book'
-        >
-          {books && books.length > 0
-            ? books.map((book, i) => (
-                <MenuItem value={book.short} key={i} data-bookid={book.book_id}>
-                  {book.short}
-                </MenuItem>
-              ))
-            : ''}
-        </Select>
-      </FormControl>
-      {chapterList.length !== 0 ? (
-        <FormControl variant='outlined' className={classes.formControl}>
-          <InputLabel id='chapter-label'>Chapter</InputLabel>
-          <Select
-            labelId='chapter-label'
-            value={chapter}
-            onChange={chapterChanged}
-            label='Chapter'
+      <Button variant='contained' color='primary' onClick={handleSelectBooks}>
+        {buttonText || 'BOOKS'}
+      </Button>
+      <Dialog open={open} className={classes.bookCard}>
+        <DialogTitle id='simple-dialog-title'>
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <Typography variant='h5'>SELECT BOOKS</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              {displaySelectAll()}
+            </Grid>
+          </Grid>
+        </DialogTitle>
+        <DialogContent>
+          <Grid container item spacing={1}>
+            {displayBooks()}
+          </Grid>
+        </DialogContent>
+        <DialogActions style={{ paddingRight: '5%' }}>
+          <Button
+            onClick={closeBookListing}
+            variant='contained'
+            color='primary'
           >
-            {chapterList.map((chapterItem) => (
-              <MenuItem value={chapterItem} key={chapterItem}>
-                {chapterItem}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      ) : (
-        ''
-      )}
+            Done
+          </Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 }
+
+BibleBooks.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.array.isRequired,
+  buttonText: PropTypes.string,
+};

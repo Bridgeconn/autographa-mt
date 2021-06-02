@@ -19,6 +19,7 @@ const sections = [
         'SourceList',
         'GetBibleBook',
         'UploadSource',
+        'LeftMenu',
       ];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));

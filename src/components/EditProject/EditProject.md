@@ -1,9 +1,9 @@
-This component helps to upload bible books
+### Edit Project Page
 
-### Upload Source
+This component will help to Edit the created Project
 
 ```js
-import UploadSource from './UploadSource';
+import EditProject from './EditProject';
 
 const [projectData, setProjectData] = React.useState({
   projectId: 100000,
@@ -72,5 +72,7 @@ const [projectData, setProjectData] = React.useState({
   active: true,
 });
 
-<UploadSource projectData={projectData} />;
+<>
+  <EditProject projectData={projectData} />
+</>;
 ```

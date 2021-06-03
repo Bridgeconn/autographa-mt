@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UploadSource() {
+export default function UploadSource(props) {
   const classes = useStyles();
   const fileInput = useRef();
   const [open, setOpen] = React.useState(false);
@@ -30,6 +30,7 @@ export default function UploadSource() {
   const [currentFile, setCurrentFile] = React.useState('');
   const [progress, setProgress] = React.useState('');
   const [responseStatus, setResponseStatus] = React.useState([]);
+  const projectDetails = props.projectData;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,12 +61,12 @@ export default function UploadSource() {
 
   const apiCall = () => {
     const data = {
-      projectId: 100015,
-      active: true,
-      selectedBooks: {
-        bible: 'hin_KJV_1_bible',
-        books: [],
-      },
+      projectId: projectDetails.projectId,
+      active: projectDetails.active,
+      // selectedBooks: {
+      //   bible: projectDetails.,
+      //   books: [],
+      // },
       uploadedBooks: fileContent,
       useDataForLearning: true,
     };
@@ -99,7 +100,7 @@ export default function UploadSource() {
     }
     apiCall();
   };
-
+  console.log('ppppppppppppppppppppppp', props.projectData);
   return (
     <div>
       <Button

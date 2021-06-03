@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2)
   },
+  customColor: {
+    backgroundColor: green[500]
+  },
   title: {
     flexGrow: 1
   }
@@ -22,9 +25,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TopBar() {
 	const classes = useStyles();
+  const [example, setExample] = useState("primary");
+  const isCustomColor = example === "customColor";
+
   return (
     <React.Fragment>
-			<Toolbar>
+			<Toolbar className={classes.customColor} >
         <IconButton
 	        edge="start"
 	        className={classes.menuButton}

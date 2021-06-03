@@ -1,11 +1,18 @@
 import React from 'react';
 import BibleBooks from './BibleBooks';
 import BookContextProvider from './BookContext';
+import PropTypes from 'prop-types';
 
-export default function BibleDropDown() {
+export default function BibleDropDown(props) {
   return (
     <BookContextProvider>
-      <BibleBooks />
+      <BibleBooks {...props} />
     </BookContextProvider>
   );
 }
+
+BibleDropDown.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.array.isRequired,
+  buttonText: PropTypes.string,
+};

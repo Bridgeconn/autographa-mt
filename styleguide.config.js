@@ -10,9 +10,31 @@ const sections = [
     content: 'README.md',
   },
   {
-    name: 'Project List View',
+    name: 'Components',
     components: () => {
-      const componentNames = ['BibleDropDown', 'LanguageSelect', 'TopBar'];
+      const componentNames = [
+        'BibleDropDown',
+        'SnackBar',
+        'LanguageSelect',
+        'SourceList',
+        'GetBibleBook',
+        'LeftMenu',
+        'TopBar',
+      ];
+      return componentNames.map((componentName) => {
+        const filename = upperFirst(camelCase(componentName));
+        return path.resolve(
+          __dirname,
+          `src/components/${componentName}`,
+          `${filename}.js`
+        );
+      });
+    },
+  },
+  {
+    name: 'Project',
+    components: () => {
+      const componentNames = ['CreateProject', 'ProjectList'];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));
         return path.resolve(

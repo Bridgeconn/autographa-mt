@@ -1,11 +1,10 @@
-### Language Select Dropdown
+### Source Language Select
 
-This component loads the list of languages.
-It uses react-select and fetches the list of languages from the vachan-api v2
+This Select Component will list all the source language from the database. It uses react-select.
 
 ```js
+import SoureList from './SourceList';
 import { useState, useEffect } from 'react';
-import LanguageSelect from './LanguageSelect';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -13,18 +12,23 @@ import Button from '@material-ui/core/Button';
 
 const [sourceLanguage, setSourceLanguage] = useState('');
 const [languageCard, setLanguageCard] = useState('');
+
 useEffect(() => {
   setLanguageCard(
     sourceLanguage ? (
       <Card style={{ width: 400, marginTop: 20 }}>
         <CardContent>
           <Typography variant='h5' component='h5' gutterBottom>
-            {sourceLanguage.language}
+            {sourceLanguage.sourceName}
           </Typography>
-          <Typography>Language Id : {sourceLanguage.languageId}</Typography>
-          <Typography>Language Code : {sourceLanguage.code}</Typography>
           <Typography>
-            Script Direction: {sourceLanguage.scriptDirection}
+            Language Id : {sourceLanguage.language.languageId}
+          </Typography>
+          <Typography>
+            Language Code : {sourceLanguage.language.code}
+          </Typography>
+          <Typography>
+            Script Direction: {sourceLanguage.language.scriptDirection}
           </Typography>
         </CardContent>
       </Card>
@@ -34,11 +38,7 @@ useEffect(() => {
   );
 }, [sourceLanguage, setLanguageCard]);
 <>
-  <LanguageSelect
-    onChange={setSourceLanguage}
-    width={300}
-    value={sourceLanguage}
-  />
+  <SoureList onChange={setSourceLanguage} width={300} value={sourceLanguage} />
   <Button
     variant='contained'
     color='primary'

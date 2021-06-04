@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -25,9 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TopBar() {
 	const classes = useStyles();
-  const [example, setExample] = useState("primary");
-  const isCustomColor = example === "customColor";
-
+  
   return (
     <React.Fragment>
 			<Toolbar className={classes.customColor} >

@@ -52,7 +52,6 @@ export default function MenuAppBar() {
           <Typography variant="h6" className={classes.title}>
             Autographa
           </Typography>
-          {auth && (
             <div>
               <IconButton
                 aria-label="account of current user"
@@ -82,7 +81,6 @@ export default function MenuAppBar() {
                 <MenuItem onClick={handleClose}>My account</MenuItem>
               </Menu>
             </div>
-          )}
         </Toolbar>
       </AppBar>
     </div>

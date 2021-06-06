@@ -145,7 +145,12 @@ export default function BibleBooks(props) {
 
   return (
     <React.Fragment>
-      <Button variant='contained' color='primary' onClick={handleSelectBooks}>
+      <Button
+        variant='contained'
+        color='primary'
+        size='small'
+        onClick={handleSelectBooks}
+      >
         {buttonText || 'BOOKS'}
       </Button>
       <Dialog open={open} className={classes.bookCard}>

@@ -34,6 +34,7 @@ const classes = useStyles();
     className={classes.button}
     variant='contained'
     color='secondary'
+    size='small'
     onClick={() => setBookName([])}
   >
     Clear

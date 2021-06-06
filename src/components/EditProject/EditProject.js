@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import React, { useState } from 'react';
 import PublishIcon from '@material-ui/icons/Publish';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -11,6 +10,9 @@ import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SourceList from '../SourceList/SourceList';
 import UploadSource from '../UploadSource/UploadSource';
+import BibleDropDown from '../BibleDropDown/BibleDropDown';
+import { API } from '../../store/api';
+import SnackBar from '../SnackBar/SnackBar.js';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -42,6 +44,9 @@ const useStyles = makeStyles({
   MuiDialogPaperWidthSm: {
     height: '600px',
   },
+  active: {
+    marginTop: '40px',
+  },
 });
 
 export default function EditProject(props) {
@@ -49,13 +54,21 @@ export default function EditProject(props) {
   const [selectedValue, setSelectedValue] = React.useState('a');
   const [selectSourceLanguage, setSelectSourceLanguage] = React.useState('');
   const classes = useStyles(props);
+  const [bookName, setBookName] = useState([]);
+  const [selectedFiles, setSelectedFiles] = React.useState('');
+  const [responseStatus, setResponseStatus] = React.useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleDialogClose = () => {
     setOpen(false);
+    setResponseStatus([]);
+    setSelectedFiles('');
+    setBookName('');
+    setSelectSourceLanguage('');
+    setSelectedValue('a');
   };
 
   const handleChange = (event) => {
@@ -63,29 +76,76 @@ export default function EditProject(props) {
     setSelectSourceLanguage('');
   };
 
-  const project = props.projectData;
-  // console.log('oooooooooooooo', project);
+  const handleClose = () => {
+    setResponseStatus([false]);
+  };
 
-  const apiCall = () => {
-    const data = {
-      projectId: projectDetails.projectId,
-      active: projectDetails.active,
-      // selectedBooks: {
-      //   bible: projectDetails.,
-      //   books: [],
-      // },
-      uploadedBooks: fileContent,
-      useDataForLearning: true,
-    };
+  const projectData = props.projectData;
 
-    API.put('autographa/projects', data)
-      .then(function (response) {
-        setResponseStatus([response.data.message, 'green']);
-        setProgress(100);
-      })
-      .catch((error) => {
-        setResponseStatus([error.response.data.error, 'red']);
+  const clearState = () => {
+    setSelectedFiles('');
+    setBookName('');
+    setSelectSourceLanguage('');
+    setSelectedValue('a');
+  };
+
+  const readFileAsText = (file) => {
+    return new Promise(function (resolve, reject) {
+      let fr = new FileReader();
+
+      fr.onload = function () {
+        resolve(fr.result);
+      };
+
+      fr.onerror = function () {
+        reject(fr);
+      };
+
+      fr.readAsText(file);
+    });
+  };
+
+  const loadText = () => {
+    if (selectSourceLanguage) {
+      const data = {
+        projectId: projectData.projectId,
+        selectedBooks: {
+          bible: selectSourceLanguage.sourceName,
+          books: bookName,
+        },
+      };
+      API.put('autographa/projects', data)
+        .then(function (response) {
+          setResponseStatus([true, 'success', response.data.message]);
+          console.log('ssssssss', response.data.message);
+        })
+        .catch((error) => {
+          setResponseStatus([true, 'error', 'failed']);
+          console.log('eeeeeeeeeeeeeee', error);
+        });
+    } else {
+      let files = selectedFiles;
+      let readers = [];
+      for (let i = 0; i < files.length; i++) {
+        readers.push(readFileAsText(files[i]));
+      }
+
+      Promise.all(readers).then((values) => {
+        const data = {
+          projectId: projectData.projectId,
+          uploadedBooks: values,
+        };
+        API.put('autographa/projects', data)
+          .then(function (response) {
+            setResponseStatus([true, 'success', response.data.message]);
+            console.log('ssssssss', response.data.message);
+          })
+          .catch((error) => {
+            setResponseStatus([true, 'error', 'failed']);
+            console.log('eeeeeeeeeeeeeee', error);
+          });
       });
+    }
 
     clearState();
   };
@@ -104,38 +164,38 @@ export default function EditProject(props) {
       <Dialog
         maxWidth='sm'
         open={open}
-        onClose={handleClose}
+        onClose={handleDialogClose}
         aria-labelledby='max-width-dialog-title'
       >
         <DialogTitle id='max-width-dialog-title'>
           {'Upload Bible Books'}
         </DialogTitle>
-        <DialogContent style={{ height: '250px' }}>
+        <DialogContent style={{ height: '300px' }}>
           <DialogContentText>
             <Grid container direction='row'>
-              {/* <SnackBar
+              <SnackBar
                 responseStatus={responseStatus}
                 handleClose={handleClose}
-              /> */}
+              />
               <Grid className={classes.gridLeft} item md={5} sm={12} container>
                 <span>Name</span>
               </Grid>
               <Grid className={classes.gridRight} item md={7} sm={12} container>
-                : {project.projectName}
+                : {projectData.projectName}
               </Grid>
 
               <Grid className={classes.gridLeft} item md={5} sm={12} container>
                 <span>Source Language</span>
               </Grid>
               <Grid className={classes.gridRight} item md={7} sm={12} container>
-                : {project.sourceLanguage.language}
+                : {projectData.sourceLanguage.language}
               </Grid>
 
               <Grid className={classes.gridLeft} item md={5} sm={12} container>
                 <span>Target Language</span>
               </Grid>
               <Grid className={classes.gridRight} item md={7} sm={12} container>
-                : {project.targetLanguage.language}
+                : {projectData.targetLanguage.language}
               </Grid>
 
               <Grid className={classes.gridLeft} item md={4} sm={12} container>
@@ -177,19 +237,37 @@ export default function EditProject(props) {
                 />
               </Grid>
               {selectedValue == 'a' ? (
-                <Grid
-                  className={classes.gridLeft}
-                  item
-                  md={10}
-                  sm={12}
-                  container
-                  justify='center'
-                >
-                  <SourceList
-                    onChange={setSelectSourceLanguage}
-                    width={212}
-                    value={selectSourceLanguage}
-                  />
+                <Grid container direction='row'>
+                  <Grid
+                    className={classes.gridLeft}
+                    item
+                    md={6}
+                    sm={6}
+                    container
+                    justify='center'
+                  >
+                    <SourceList
+                      onChange={setSelectSourceLanguage}
+                      width={212}
+                      value={selectSourceLanguage}
+                    />
+                  </Grid>
+                  {selectSourceLanguage && (
+                    <Grid
+                      className={classes.gridLeft}
+                      item
+                      md={5}
+                      sm={6}
+                      container
+                      justify='center'
+                    >
+                      <BibleDropDown
+                        value={bookName}
+                        onChange={setBookName}
+                        buttonText='SELECT BOOKS'
+                      />
+                    </Grid>
+                  )}
                 </Grid>
               ) : (
                 <Grid
@@ -200,17 +278,37 @@ export default function EditProject(props) {
                   container
                   justify='center'
                 >
-                  <UploadSource projectData={project} />
+                  <UploadSource
+                    projectData={projectData}
+                    onChange={setSelectedFiles}
+                  />
                 </Grid>
               )}
             </Grid>
+            <Grid container direction='row' className={classes.active}>
+              <Grid className={classes.gridLeft} item md={4} sm={12} container>
+                <Button
+                  onClick={loadText}
+                  variant='contained'
+                  size='small'
+                  color='primary'
+                >
+                  Save
+                </Button>
+              </Grid>
+              <Grid className={classes.gridRight} item md={4} sm={12} container>
+                <Button
+                  onClick={handleDialogClose}
+                  variant='contained'
+                  size='small'
+                  color='primary'
+                >
+                  Cancel
+                </Button>
+              </Grid>
+            </Grid>
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color='primary'>
-            Close
-          </Button>
-        </DialogActions>
       </Dialog>
     </div>
   );

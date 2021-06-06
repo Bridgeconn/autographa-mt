@@ -66,7 +66,7 @@ const [projectData, setProjectData] = React.useState({
     },
   ],
   metaData: {
-    books: [],
+    books: ['mat', 'luk', 'jhn', '3jn'],
     useDataForLearning: true,
   },
   active: true,

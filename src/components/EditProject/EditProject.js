@@ -7,7 +7,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
-// import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SourceList from '../SourceList/SourceList';
@@ -61,10 +60,11 @@ export default function EditProject(props) {
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
+    setSelectSourceLanguage('');
   };
 
   const project = props.projectData;
-  console.log('oooooooooooooo', project);
+  // console.log('oooooooooooooo', project);
 
   const apiCall = () => {
     const data = {

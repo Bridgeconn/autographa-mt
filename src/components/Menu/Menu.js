@@ -17,10 +17,10 @@ export default function SimpleMenu() {
   return (
     <div>
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-        Menu 1
+        Project
       </Button>
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-        Menu 2
+        View
       </Button>
       <Menu
         id="simple-menu"
@@ -29,9 +29,10 @@ export default function SimpleMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}>Translation Word</MenuItem>
+        <MenuItem onClick={handleClose}>Source Reference</MenuItem>
+        <MenuItem onClick={handleClose}>Translation Notes</MenuItem>
+        <MenuItem onClick={handleClose}>Source</MenuItem>
       </Menu>
     </div>
   );

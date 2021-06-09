@@ -7,3 +7,4 @@ export { default as GetBibleBook } from './GetBibleBook';
 export { default as ProjectList } from './ProjectList';
 export { default as LeftMenu } from './LeftMenu';
 export { default as TopBar } from './TopBar';
+export { default as Menu } from './Menu';

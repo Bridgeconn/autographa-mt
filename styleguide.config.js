@@ -20,6 +20,7 @@ const sections = [
         'GetBibleBook',
         'LeftMenu',
         'TopBar',
+        'Menu',
       ];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));

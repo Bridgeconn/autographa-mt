@@ -13,6 +13,7 @@ import UploadSource from '../UploadSource/UploadSource';
 import BibleDropDown from '../BibleDropDown/BibleDropDown';
 import { API } from '../../store/api';
 import SnackBar from '../SnackBar/SnackBar.js';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -57,6 +58,8 @@ export default function EditProject(props) {
   const [bookName, setBookName] = useState([]);
   const [selectedFiles, setSelectedFiles] = React.useState('');
   const [responseStatus, setResponseStatus] = React.useState([]);
+  const [loading, setLoading] = React.useState('');
+  const [disableButton, setDisableButton] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -69,11 +72,16 @@ export default function EditProject(props) {
     setBookName('');
     setSelectSourceLanguage('');
     setSelectedValue('a');
+    setDisableButton(false);
   };
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
+    setSelectedFiles('');
+    setBookName('');
     setSelectSourceLanguage('');
+    setResponseStatus([]);
+    setDisableButton(false);
   };
 
   const handleClose = () => {
@@ -87,6 +95,7 @@ export default function EditProject(props) {
     setBookName('');
     setSelectSourceLanguage('');
     setSelectedValue('a');
+    setDisableButton(false);
   };
 
   const readFileAsText = (file) => {
@@ -107,6 +116,9 @@ export default function EditProject(props) {
 
   const loadText = () => {
     if (selectSourceLanguage) {
+      setLoading(true);
+      setDisableButton(true);
+
       const data = {
         projectId: projectData.projectId,
         selectedBooks: {
@@ -117,13 +129,17 @@ export default function EditProject(props) {
       API.put('autographa/projects', data)
         .then(function (response) {
           setResponseStatus([true, 'success', response.data.message]);
-          console.log('ssssssss', response.data.message);
+          clearState();
+          setLoading(false);
         })
         .catch((error) => {
-          setResponseStatus([true, 'error', 'failed']);
-          console.log('eeeeeeeeeeeeeee', error);
+          setResponseStatus([true, 'error', error.response.data.error]);
+          clearState();
+          setLoading(false);
         });
     } else {
+      setLoading(true);
+      setDisableButton(true);
       let files = selectedFiles;
       let readers = [];
       for (let i = 0; i < files.length; i++) {
@@ -138,16 +154,16 @@ export default function EditProject(props) {
         API.put('autographa/projects', data)
           .then(function (response) {
             setResponseStatus([true, 'success', response.data.message]);
-            console.log('ssssssss', response.data.message);
+            clearState();
+            setLoading(false);
           })
           .catch((error) => {
-            setResponseStatus([true, 'error', 'failed']);
-            console.log('eeeeeeeeeeeeeee', error);
+            setResponseStatus([true, 'error', error.response.data.error]);
+            clearState();
+            setLoading(false);
           });
       });
     }
-
-    clearState();
   };
 
   return (
@@ -250,6 +266,7 @@ export default function EditProject(props) {
                       onChange={setSelectSourceLanguage}
                       width={212}
                       value={selectSourceLanguage}
+                      componentName={'Select Source'}
                     />
                   </Grid>
                   {selectSourceLanguage && (
@@ -292,11 +309,15 @@ export default function EditProject(props) {
                   variant='contained'
                   size='small'
                   color='primary'
+                  disabled={
+                    !(bookName.length > 0 || selectedFiles.length > 0) ||
+                    disableButton
+                  }
                 >
                   Save
                 </Button>
               </Grid>
-              <Grid className={classes.gridRight} item md={4} sm={12} container>
+              <Grid className={classes.gridRight} item md={3} sm={12} container>
                 <Button
                   onClick={handleDialogClose}
                   variant='contained'
@@ -305,6 +326,10 @@ export default function EditProject(props) {
                 >
                   Cancel
                 </Button>
+              </Grid>
+
+              <Grid className={classes.gridRight} item md={4} sm={12} container>
+                {loading && <CircularProgress size='1.5rem' />}
               </Grid>
             </Grid>
           </DialogContentText>

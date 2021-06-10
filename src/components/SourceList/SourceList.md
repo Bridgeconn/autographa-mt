@@ -38,7 +38,12 @@ useEffect(() => {
   );
 }, [sourceLanguage, setLanguageCard]);
 <>
-  <SoureList onChange={setSourceLanguage} width={300} value={sourceLanguage} />
+  <SoureList
+    onChange={setSourceLanguage}
+    width={300}
+    value={sourceLanguage}
+    componentName={'Select Source'}
+  />
   <Button
     variant='contained'
     color='primary'

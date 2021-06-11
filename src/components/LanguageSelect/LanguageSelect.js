@@ -1,36 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select';
+import { AsyncPaginate } from 'react-select-async-paginate';
 import { API } from '../../store/api';
 import { Box } from '@material-ui/core';
 
 export default function LanguageSelect(props) {
-  const [languages, setLanguages] = useState(null);
-  useEffect(() => {
-    API.get('languages?limit=10000').then(function (response) {
-      setLanguages(response.data);
-    });
-  }, []);
+  const loadOptions = async (searchQuery, loadedOptions, { page }) => {
+    const response = await API.get(
+      `languages?search_word=${searchQuery}&skip=${(page - 1) * 20}&limit=20`
+    );
+    const responseJSON = response.data;
+    return {
+      options: responseJSON,
+      hasMore: responseJSON.length >= 1,
+      additional: {
+        page: searchQuery ? 2 : page + 1,
+      },
+    };
+  };
+
   return (
     <Box style={{ width: props.width || 300 }}>
-      <Select
-        onChange={(option) => props.onChange(option || '')}
-        options={languages}
+      <AsyncPaginate
+        onChange={(option) => props.onChange(option)}
+        loadOptions={loadOptions}
         getOptionValue={(option) => option.code}
         getOptionLabel={(option) => option.language}
-        placeholder={languages ? 'Select Language' : 'Loading'}
+        placeholder='Select Language'
         isSearchable
         isClearable
-        value={props.value}
-        isLoading={!languages}
-        isDisabled={!languages}
+        value={props.value || ''}
+        additional={{
+          page: 1,
+        }}
       />
     </Box>
   );
 }
 
 LanguageSelect.propTypes = {
-  onChange: PropTypes.func,
-  value: PropTypes.object,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.object.isRequired,
   width: PropTypes.number,
 };

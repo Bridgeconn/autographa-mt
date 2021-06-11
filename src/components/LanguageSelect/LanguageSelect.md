@@ -10,8 +10,9 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
-const [sourceLanguage, setSourceLanguage] = useState('');
+const [sourceLanguage, setSourceLanguage] = useState(null);
 const [languageCard, setLanguageCard] = useState('');
 useEffect(() => {
   setLanguageCard(
@@ -26,6 +27,15 @@ useEffect(() => {
           <Typography>
             Script Direction: {sourceLanguage.scriptDirection}
           </Typography>
+          <Typography>Metadata:</Typography>
+          <TextField
+            style={{ width: '100%' }}
+            id='outlined-multiline-static'
+            multiline
+            disabled
+            defaultValue={JSON.stringify(sourceLanguage.metaData, undefined, 4)}
+            variant='outlined'
+          />
         </CardContent>
       </Card>
     ) : (

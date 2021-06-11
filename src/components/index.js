@@ -8,3 +8,4 @@ export { default as ProjectList } from './ProjectList';
 export { default as LeftMenu } from './LeftMenu';
 export { default as BookDropdown } from './BookDropDown';
 export { default as SourcePanel } from './SourcePanel';
+export { default as TopBar } from './TopBar';

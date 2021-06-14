@@ -1,10 +1,14 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 
-export default function SimpleMenu() {
+export default function SimpleMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const {menuItems, buttonLabel} = props;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -14,13 +18,19 @@ export default function SimpleMenu() {
     setAnchorEl(null);
   };
 
+  const handleMenuClick = (click) => {
+    handleClose()
+    click()
+  };
+
+
   return (
     <div>
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
         Project
       </Button>
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-        View
+        {buttonLabel}
       </Button>
       <Menu
         id="simple-menu"
@@ -29,10 +39,7 @@ export default function SimpleMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Translation Word</MenuItem>
-        <MenuItem onClick={handleClose}>Source Reference</MenuItem>
-        <MenuItem onClick={handleClose}>Translation Notes</MenuItem>
-        <MenuItem onClick={handleClose}>Source</MenuItem>
+        {menuItems.map(menu => <MenuItem onClick={menu.onClick} >{menu.label} {menu.status ? <CheckIcon /> : <CloseIcon />} </MenuItem>)}
       </Menu>
     </div>
   );

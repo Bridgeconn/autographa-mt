@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
   DialogContent: {
     paddingLeft: '5px',
     paddingRight: '5px',
+    width: '590px',
   },
   displayBooks: {
     paddingLeft: '30px',

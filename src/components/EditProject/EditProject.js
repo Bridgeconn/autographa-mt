@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PublishIcon from '@material-ui/icons/Publish';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -69,6 +70,18 @@ export default function EditProject(props) {
     setOpen(true);
   };
 
+  useEffect(() => {
+    // callFn();
+    API.get('bibles/en_KJV_1_bible/books')
+      .then(function (response) {
+        setSourceBooks(response.data);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+    // console.log('ppppppppppppppppppppppppppppppppppppppppppppppppppp');
+  }, [selectSourceLanguage]);
+
   const handleDialogClose = () => {
     setOpen(false);
     setResponseStatus([]);
@@ -93,6 +106,7 @@ export default function EditProject(props) {
   };
 
   const projectData = props.projectData;
+
   // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', projectData);
 
   const clearState = () => {
@@ -118,6 +132,11 @@ export default function EditProject(props) {
       fr.readAsText(file);
     });
   };
+
+  // const fetchSourceBible = () => {
+  //   setSelectSourceLanguage;
+  //   console.log('55555555555555555555555555555555555555555555555');
+  // };
 
   const loadText = () => {
     if (selectSourceLanguage) {
@@ -170,7 +189,10 @@ export default function EditProject(props) {
       });
     }
   };
-  console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', projectData);
+  console.log(
+    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    selectSourceLanguage
+  );
   return (
     <div>
       <SnackBar responseStatus={responseStatus} handleClose={handleClose} />
@@ -335,7 +357,7 @@ export default function EditProject(props) {
                             onChange={setBookList}
                             buttonText='SELECT BOOKS'
                             sourceBooks={sourceBooks}
-                            projectBooks={projectBooks}
+                            projectBooks={projectData.metaData.books}
                           />
                         </Grid>
                       )}

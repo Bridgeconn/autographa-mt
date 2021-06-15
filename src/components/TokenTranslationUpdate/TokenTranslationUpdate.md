@@ -25,7 +25,7 @@ const [tokenDetail, setTokenDetail] = React.useState({
   translations: {},
 });
 
-const projectId = '100000';
+const projectId = 100000;
 
 <>
   <TokenTranslationUpdate tokenDetail={tokenDetail} projectId={projectId} />

@@ -1,9 +1,8 @@
-export { default as BibeDropdown } from './BibleDropDown';
+export { default as BibleBooks } from './BibleDropDown';
 export { default as LanguageSelect } from './LanguageSelect';
 export { default as CreateProject } from './CreateProject';
 export { default as SnackBar } from './SnackBar';
 export { default as SourceList } from './SourceList';
-export { default as GetBibleBook } from './GetBibleBook';
 export { default as ProjectList } from './ProjectList';
 export { default as LeftMenu } from './LeftMenu';
 export { default as EditProject } from './EditProject';

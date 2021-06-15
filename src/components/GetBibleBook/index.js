@@ -1,1 +1,0 @@
-export { GetBibleBook } from './GetBibleBook';

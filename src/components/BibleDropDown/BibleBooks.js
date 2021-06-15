@@ -1,21 +1,21 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import { Button, Checkbox, Typography } from '@material-ui/core';
+import { Button, Checkbox } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
-import { BookContext } from './BookContext';
 import { green } from '@material-ui/core/colors';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const GreenCheckbox = withStyles({
   root: {
-    // padding: 5,
     padding: '0 5px',
     '&$checked': {
       color: green[600],
@@ -24,14 +24,30 @@ const GreenCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color='default' {...props} />);
 
+const DisabledCheckbox = withStyles({
+  root: {
+    padding: '0 5px',
+    '&$checked': {
+      color: '#c2bebe',
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color='default' {...props} />);
+
 const useStyles = makeStyles((theme) => ({
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+
   bookButton: {
     padding: '0 8px',
-    width: '71px',
+    width: '80px',
+    margin: '4px',
   },
-  bookCard: {
-    width: 580,
-  },
+
   label: {
     marginRight: 0,
     width: 60,
@@ -41,24 +57,36 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '58px',
     width: 150,
   },
+
+  DialogTitle: {
+    fontWeight: 'bold',
+  },
+  DialogContent: {
+    paddingLeft: '5px',
+    paddingRight: '5px',
+  },
+  displayBooks: {
+    paddingLeft: '30px',
+    marginTop: '5px',
+  },
+  displaySelectAll: {
+    paddingLeft: '20px',
+  },
+  DialogActions: {
+    paddingRight: '5%',
+  },
 }));
 
 export default function BibleBooks(props) {
   const classes = useStyles();
-  const { books } = useContext(BookContext);
-  const { value, onChange, buttonText } = props;
-  const [bookList, setBookList] = React.useState(value);
+  const { projectBooks, onChange, buttonText, sourceBooks } = props;
+  const [bookList, setBookList] = React.useState([]);
   const [open, setOpen] = React.useState(false);
+  const [selectAll, setSelectAll] = React.useState(false);
 
-  const closeBookListing = () => {
-    const data = [];
-    books.forEach((book) => {
-      if (bookList.includes(book.bookCode)) {
-        data.push(book.bookCode);
-      }
-    });
-    onChange(data);
-    setOpen(false);
+  const addBooks = () => {
+    onChange(bookList);
+    dialogClose();
   };
 
   const handleChange = (e) => {
@@ -73,76 +101,103 @@ export default function BibleBooks(props) {
     setBookList(books);
   };
 
-  useEffect(() => {
-    setBookList(value);
-  }, [value]);
-
   const displayBooks = () => {
-    return books.map((bookObject, i) => {
-      const book = bookObject.bookCode;
-      const checked = bookList.includes(book) ? true : '';
-      return (
-        <Grid item xs={2} key={i}>
-          <Button
-            size='small'
-            variant='outlined'
-            className={classes.bookButton}
-          >
-            <FormControlLabel
-              className={classes.label}
-              control={
-                <GreenCheckbox
-                  icon={<CheckBoxOutlineBlankIcon fontSize='small' />}
-                  checkedIcon={<CheckBoxIcon fontSize='small' />}
-                  name={book}
-                  checked={checked}
-                  onClick={handleChange}
-                />
-              }
-              // label={book}
-              label={<span style={{ fontSize: 15 }}>{book}</span>}
-            />
-          </Button>
-        </Grid>
-      );
-    });
+    if (sourceBooks) {
+      return sourceBooks.map((bookObject, i) => {
+        const book = bookObject.book.bookCode;
+        const checkProjectList = projectBooks.includes(book) ? true : '';
+        const checkBookList = bookList.includes(book) ? true : '';
+        if (checkProjectList === true) {
+          return (
+            <Button
+              size='small'
+              variant='outlined'
+              className={classes.bookButton}
+            >
+              <FormControlLabel
+                className={classes.label}
+                control={
+                  <DisabledCheckbox
+                    icon={<CheckBoxOutlineBlankIcon fontSize='small' />}
+                    checkedIcon={<CheckBoxIcon fontSize='small' />}
+                    name={book}
+                    checked={checkProjectList}
+                    disabled={checkProjectList}
+                  />
+                }
+                label={<span style={{ fontSize: 15 }}>{book}</span>}
+              />
+            </Button>
+          );
+        } else {
+          return (
+            <Button
+              size='small'
+              variant='outlined'
+              className={classes.bookButton}
+            >
+              <FormControlLabel
+                className={classes.label}
+                control={
+                  <GreenCheckbox
+                    icon={<CheckBoxOutlineBlankIcon fontSize='small' />}
+                    checkedIcon={<CheckBoxIcon fontSize='small' />}
+                    name={book}
+                    checked={checkBookList}
+                    onClick={handleChange}
+                  />
+                }
+                label={<span style={{ fontSize: 15 }}>{book}</span>}
+              />
+            </Button>
+          );
+        }
+      });
+    }
   };
 
   const handleSelectAll = (e) => {
-    const checkedName = e.target.checked;
+    const checkValue = e.target.checked;
     const Books = [];
-    if (checkedName === true) {
-      for (const i in books) {
-        Books.push(books[i].bookCode);
-      }
+    if (checkValue) {
+      sourceBooks.map((bk) => {
+        const currentBook = bk.book.bookCode;
+        if (!projectBooks.includes(currentBook)) {
+          Books.push(bk.book.bookCode);
+        }
+      });
     }
     setBookList(Books);
+    setSelectAll(e.target.checked);
   };
 
   const displaySelectAll = () => {
-    const checked = bookList.length === books.length ? true : '';
-    return (
-      <FormControlLabel
-        className={classes.labelSelect}
-        label={<Typography variant='h6'>Select All</Typography>}
-        labelPlacement='start'
-        control={
-          <GreenCheckbox
-            icon={<CheckBoxOutlineBlankIcon fontSize='small' />}
-            checkedIcon={<CheckBoxIcon fontSize='small' />}
-            onClick={handleSelectAll}
-            checked={checked}
-            inputProps={{ 'aria-label': 'primary checkbox' }}
-          />
-        }
-      />
-    );
+    if (sourceBooks) {
+      return (
+        <FormControlLabel
+          label={<span>Select All</span>}
+          labelPlacement='start'
+          control={
+            <GreenCheckbox
+              icon={<CheckBoxOutlineBlankIcon fontSize='small' />}
+              checkedIcon={<CheckBoxIcon fontSize='small' />}
+              onClick={handleSelectAll}
+              checked={selectAll}
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+          }
+        />
+      );
+    }
   };
 
   const handleSelectBooks = () => {
     setOpen(true);
   };
 
+  const dialogClose = () => {
+    setOpen(false);
+  };
   return (
     <React.Fragment>
       <Button
@@ -153,28 +208,39 @@ export default function BibleBooks(props) {
       >
         {buttonText || 'BOOKS'}
       </Button>
-      <Dialog open={open} className={classes.bookCard}>
+      <Dialog
+        maxWidth='sm'
+        aria-labelledby='customized-dialog-title'
+        open={open}
+      >
         <DialogTitle id='simple-dialog-title'>
-          <Grid container spacing={3}>
-            <Grid item xs={6}>
-              <Typography variant='h5'>SELECT BOOKS</Typography>
+          <Grid container direction='row'>
+            <Grid item md={6}>
+              <span className={classes.DialogTitle}>SELECT BOOKS</span>
             </Grid>
-            <Grid item xs={6}>
-              {displaySelectAll()}
+            <Grid item md={6}>
+              <IconButton
+                aria-label='close'
+                className={classes.closeButton}
+                onClick={dialogClose}
+              >
+                <CloseIcon />
+              </IconButton>
             </Grid>
           </Grid>
         </DialogTitle>
-        <DialogContent>
-          <Grid container item spacing={1}>
-            {displayBooks()}
+        <DialogContent className={classes.DialogContent} dividers>
+          <Grid container direction='row'>
+            <Grid className={classes.displaySelectAll} item md={12}>
+              {displaySelectAll()}
+            </Grid>
+            <Grid className={classes.displayBooks} item md={12}>
+              {displayBooks()}
+            </Grid>
           </Grid>
         </DialogContent>
-        <DialogActions style={{ paddingRight: '5%' }}>
-          <Button
-            onClick={closeBookListing}
-            variant='contained'
-            color='primary'
-          >
+        <DialogActions className={classes.DialogActions}>
+          <Button onClick={addBooks} variant='contained' color='primary'>
             Done
           </Button>
         </DialogActions>

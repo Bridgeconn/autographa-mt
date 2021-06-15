@@ -1,1 +1,1 @@
-export { default } from './BibleDropDown';
+export { default } from './BibleBooks';

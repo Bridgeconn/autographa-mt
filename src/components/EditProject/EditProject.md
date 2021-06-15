@@ -4,75 +4,38 @@ This component will help to Edit the created Project
 
 ```js
 import EditProject from './EditProject';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+const [projectData, setProjectData] = React.useState();
 
-const [projectData, setProjectData] = React.useState({
-  projectId: 100000,
-  projectName: 'Mission Agape',
-  sourceLanguage: {
-    languageId: 100037,
-    language: 'English',
-    code: 'en',
-    scriptDirection: 'left-to-right',
-    metaData: {
-      region: 'United Kingdom, Europe',
-      'alternate-names': [
-        'Anglit',
-        'Kiingereza',
-        'Gustavia English',
-        'Samaná English',
-        'Saint Lucian English',
-        'Noongar',
-        'Noonga',
-        'Newcastle Northumber',
-        'Neo-Nyungar (Noogar)',
-        'Glaswegian',
-        'Brummy',
-        'Birmingham (Brummie)',
-        'Bay Islands English',
-        'Australian Standard English',
-        'Aboriginal English',
-        'African American Vernacular English (AAVE)',
-      ],
-      'suppress-script': 'Latn',
-      'is-gateway-language': true,
-    },
-  },
-  targetLanguage: {
-    languageId: 100057,
-    language: 'Hindi',
-    code: 'hi',
-    scriptDirection: 'left-to-right',
-    metaData: {
-      region: 'India, Asia',
-      'alternate-names': [
-        'Khadi Boli',
-        'Khari Boli',
-        'Dakhini',
-        'Hindi-Urdu',
-        'Khariboli',
-      ],
-      'suppress-script': 'Deva',
-      'is-gateway-language': true,
-    },
-  },
-  documentFormat: 'usfm',
-  users: [
-    {
-      project_id: 100000,
-      userId: 10101,
-      userRole: 'owner',
-      metaData: null,
-      active: true,
-    },
-  ],
-  metaData: {
-    books: ['mat', 'luk', 'jhn', '3jn'],
-    useDataForLearning: true,
-  },
-  active: true,
-});
+import { API } from '../../store/api';
+
+const loadText = () => {
+  API.get('autographa/projects?project_name=Mission%20Agape')
+    .then(function (response) {
+      setProjectData(response.data[0]);
+    })
+    .catch((error) => {
+      console.log('error', error);
+    });
+};
 
 <>
-  <EditProject projectData={projectData} />
+  <Grid container direction='row'>
+    <Grid item md={3}>
+      <Button
+        variant='contained'
+        size='small'
+        color='primary'
+        onClick={loadText}
+      >
+        Load Project
+      </Button>
+    </Grid>
+
+    <Grid item md={2}>
+      {projectData && <EditProject projectData={projectData} />}
+    </Grid>
+  </Grid>
 </>;
 ```

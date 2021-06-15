@@ -17,7 +17,6 @@ const sections = [
         'SnackBar',
         'LanguageSelect',
         'SourceList',
-        'GetBibleBook',
         'UploadSource',
         'LeftMenu',
         'TopBar',

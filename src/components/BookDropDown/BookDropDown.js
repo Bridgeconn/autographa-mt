@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BookDropDown(props) {
   const classes = useStyles();
-  const { value, onChange, buttonText } = props;
+  const { value, onChange, width } = props;
   const [open, setOpen] = React.useState(false);
   const [book, setBook] = React.useState(bibleBooks[0].abbreviation);
   const [chapter, setChapter] = React.useState(1);
@@ -67,9 +67,9 @@ export default function BookDropDown(props) {
     setBook(book);
     setTabValue(1);
   };
-  const chapterClicked = (c) => {
-    setChapter(c);
-    onChange({ book, c });
+  const chapterClicked = (chapter) => {
+    setChapter(chapter);
+    onChange({ book, chapter });
     setOpen(false);
   };
 
@@ -129,9 +129,13 @@ export default function BookDropDown(props) {
 
   return (
     <React.Fragment>
-      <Button variant='contained' color='primary' onClick={handleSelectBooks}>
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={handleSelectBooks}
+        style={{ width: width || 100 }}
+      >
         {book} {chapter}
-        {/* {buttonText || 'BOOKS'} */}
       </Button>
       <Dialog open={open}>
         <DialogContent className={classes.bookCard}>
@@ -169,22 +173,5 @@ BookDropDown.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.array.isRequired,
   buttonText: PropTypes.string,
+  width: PropTypes.number,
 };
-
-// {buttonText === 'SELECT BOOKS' ? (
-//   <div>First Title</div>
-// ) : (
-//   [
-//     this.state.someTestValue ? (
-//       <div>Second Title</div>
-//     ) : (
-//       [
-//         this.state.thirdValueTest ? (
-//           <div>Some Third Title</div>
-//         ) : (
-//           <div>Last Title</div>
-//         ),
-//       ]
-//     ),
-//   ]
-// )}

@@ -22,6 +22,7 @@ const sections = [
         'BookDropDown',
         'SourcePanel',
         'TopBar',
+        'DragAndDrop',
       ];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));

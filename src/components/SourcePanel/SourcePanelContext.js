@@ -6,17 +6,16 @@ export const SourcePanelContext = createContext();
 
 const SourcePanelContextProvider = (props) => {
   const [verses, setVerses] = useState([]);
-  const { value } = props;
-  console.log('SOURCEPANELVALUE', value);
-
+  const { value, source } = props;
   useEffect(() => {
-    API.get(`/bibles/hi_IRV_1_bible/verses?active=true&skip=0&limit=100`)
+    API.get(
+      `/bibles/${source.sourceName}/verses?book_code=${value.book}&chapter=${value.chapter}&active=true&limit=200`
+    )
       .then((response) => {
         setVerses(response.data);
-        console.log('SOURCEPANEL', response);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [value, source]);
 
   return (
     <SourcePanelContext.Provider
@@ -31,7 +30,8 @@ const SourcePanelContextProvider = (props) => {
 
 SourcePanelContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
-  value: PropTypes.object,
+  value: PropTypes.object.isRequired,
+  source: PropTypes.string.isRequired,
 };
 
 export default SourcePanelContextProvider;

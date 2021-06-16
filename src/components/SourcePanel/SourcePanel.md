@@ -13,20 +13,21 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { bibleTitus } from '../../store/bible';
 import { SourcePanelContext } from './SourcePanelContext';
+import SoureList from '../SourceList/';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     margin: 'auto',
-    maxWidth: 500,
+    maxWidth: 600,
     maxHeight: 400,
   },
 }));
 
-
 const bookP = bibleTitus;
 const classes = useStyles();
 const [bookChapter, setBookChapter] = useState({ book: '1sa', chapter: 1 });
+const [source, setSource] = useState([]);
 <>
   <Paper className={classes.paper}>
     <Grid container spacing={3} className={classes.gridContainer}>
@@ -35,16 +36,18 @@ const [bookChapter, setBookChapter] = useState({ book: '1sa', chapter: 1 });
           SOURCE REFERENCE
         </Typography>
       </Grid>
-      <Grid item xs={3} />
-      <Grid item xs={3}>
+      <Grid item xs={4}>
+        <SoureList onChange={setSource} width={190} value={source} />
+      </Grid>
+      <Grid item xs={2}>
         <BookDropDown
+          width={88}
           value={bookChapter}
           onChange={setBookChapter}
-          buttonText='BOOKS SELECTOR'
         />
       </Grid>
     </Grid>
-    <SourcePanel value={bookChapter} />
+    <SourcePanel source={source} value={bookChapter} />
   </Paper>
 </>;
 ```

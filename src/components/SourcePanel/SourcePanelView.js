@@ -34,24 +34,13 @@ export default function SourcePanel(props) {
   const displayChapters = () => {
     const bookValue = value.book;
     const bookChapter = value.c;
-    const bookVerses = [];
-    for (const i in verses) {
-      if (bookValue === verses[i].reference.book) {
-        if (bookChapter === verses[i].reference.chapter) {
-          bookVerses.push(
-            verses[i].reference.verseNumber + ' ' + verses[i].verseText
-          );
-        }
-      }
-    }
-
-    console.log(bookVerses.length);
-    if (bookVerses.length > 0) {
-      return bookVerses.map((verses, i) => {
+    console.log(verses);
+    if (verses.length > 0) {
+      return verses.map((verses, i) => {
         return (
           <Grid item xs={12} key={i}>
             <Typography gutterBottom variant='subtitle1'>
-              {verses}
+              {verses.reference.verseNumber + ' ' + verses.verseText}
             </Typography>
           </Grid>
         );

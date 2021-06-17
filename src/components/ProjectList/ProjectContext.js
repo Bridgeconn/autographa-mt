@@ -22,6 +22,7 @@ const ProjectsContextProvider = (props) => {
     <ProjectsContext.Provider
       value={{
         projects: projects,
+        reload: reload,
         setReload: setReload,
         activeProjects: activeProjects,
         setActiveProjects: setActiveProjects,

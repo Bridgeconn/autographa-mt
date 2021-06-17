@@ -11,7 +11,7 @@ const [projectData, setProjectData] = React.useState();
 import { API } from '../../store/api';
 
 const loadText = () => {
-  API.get('autographa/projects?project_name=Mission%20Agape')
+  API.get('autographa/projects?project_name=Operation%20Agape')
     .then(function (response) {
       setProjectData(response.data[0]);
     })

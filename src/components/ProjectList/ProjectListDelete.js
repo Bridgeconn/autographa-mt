@@ -77,9 +77,15 @@ export default function ProjectListDelete(props) {
         aria-describedby='alert-dialog-description'
       >
         <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            Are you sure you want to deactivate {props.projectName} project?
-          </DialogContentText>
+          {activeProjects === true ? (
+            <DialogContentText id='alert-dialog-description'>
+              Are you sure you want to deactivate {props.projectName} project?
+            </DialogContentText>
+          ) : (
+            <DialogContentText id='alert-dialog-description'>
+              Are you sure you want to Activate {props.projectName} project?
+            </DialogContentText>
+          )}
         </DialogContent>
         <DialogActions>
           {activeProjects === true ? (

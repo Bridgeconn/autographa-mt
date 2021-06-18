@@ -91,7 +91,7 @@ export default function LeftMenu() {
           <Tab icon={<ListAlt />} label='PROJECTS' className={classes.button} />
           <Tab icon={<PostAdd />} label='NEW' className={classes.button} />
         </Tabs>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={value} index={0} style={{ overflowX: 'auto' }}>
           <ProjectList />
         </TabPanel>
         <TabPanel value={value} index={1}>

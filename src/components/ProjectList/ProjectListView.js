@@ -2,10 +2,12 @@ import React, { useContext } from 'react';
 import MUIDataTable from 'mui-datatables';
 import { ProjectsContext } from './ProjectContext';
 import ProjectListDelete from './ProjectListDelete';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import ProjectListEdit from './ProjectListEdit';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const columns = [
   {
@@ -68,8 +70,8 @@ const options = {
   selectableRows: 'none',
 };
 
-const ProjectListView = () => {
-  const { projects, setActiveProjects, activeProjects } =
+export default function ProjectListView() {
+  const { projects, setActiveProjects, activeProjects, setReload } =
     useContext(ProjectsContext);
   const projectData = projects.map((project) => {
     return [
@@ -80,8 +82,33 @@ const ProjectListView = () => {
       project.projectId,
     ];
   });
+
+  const handleRefresh = () => {
+    setReload(true);
+  };
+
   return (
     <div>
+      <Grid
+        component='label'
+        container
+        alignItems='center'
+        spacing={1}
+        style={{
+          left: '62%',
+          top: '1.3rem',
+          position: 'relative',
+          float: 'left',
+          zIndex: 50,
+          width: 'auto',
+        }}
+      >
+        <Grid item>
+          <Tooltip title='Refresh'>
+            <RefreshIcon onClick={handleRefresh} />
+          </Tooltip>
+        </Grid>
+      </Grid>
       <Typography
         component='div'
         style={{
@@ -110,6 +137,4 @@ const ProjectListView = () => {
       />
     </div>
   );
-};
-
-export default ProjectListView;
+}

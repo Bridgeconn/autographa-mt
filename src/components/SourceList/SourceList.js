@@ -5,24 +5,24 @@ import { API } from '../../store/api';
 import { Box } from '@material-ui/core';
 
 export default function SourceList(props) {
+  const { width, value, onChange } = props;
   const [sourceLanguages, setSourceLanguages] = useState(null);
   useEffect(() => {
-    API.get('sources').then(function (response) {
+    API.get('sources?content_type=bible').then(function (response) {
       setSourceLanguages(response.data);
-      // console.log('ssssssssssssssssss', response.data);
     });
   }, []);
   return (
-    <Box style={{ width: props.width || 300 }}>
+    <Box style={{ width: width || 300 }}>
       <Select
-        onChange={(option) => props.onChange(option || '')}
+        onChange={(option) => onChange(option)}
         options={sourceLanguages}
         getOptionValue={(option) => option.language.languageId}
         getOptionLabel={(option) => option.sourceName}
-        placeholder={sourceLanguages ? 'Select Language' : 'Loading'}
+        placeholder={sourceLanguages ? 'Select Source' : 'Loading'}
         isSearchable
         isClearable
-        value={props.value}
+        value={value}
         isLoading={!sourceLanguages}
         isDisabled={!sourceLanguages}
       />

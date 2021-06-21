@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Alert from '@material-ui/lab/Alert';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,10 +7,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import Tooltip from '@material-ui/core/Tooltip';
+import { ProjectsContext } from './ProjectContext';
 import PropTypes from 'prop-types';
 
 export default function ProjectListEdit(props) {
   const [open, setOpen] = React.useState(false);
+  const { activeProjects } = useContext(ProjectsContext);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,10 +23,14 @@ export default function ProjectListEdit(props) {
   };
 
   return (
-    <>
-      <Tooltip title='Edit'>
-        <EditIcon onClick={handleClickOpen} />
-      </Tooltip>
+    <div>
+      {activeProjects === true ? (
+        <Tooltip title='Edit'>
+          <EditIcon onClick={handleClickOpen} />
+        </Tooltip>
+      ) : (
+        <></>
+      )}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -51,7 +57,7 @@ export default function ProjectListEdit(props) {
           </Alert>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }
 

@@ -7,3 +7,5 @@ export { default as ProjectList } from './ProjectList';
 export { default as LeftMenu } from './LeftMenu';
 export { default as EditProject } from './EditProject';
 export { default as TopBar } from './TopBar';
+export { default as Menu } from './Menu';
+export { default as StatusBar } from './StatusBar';

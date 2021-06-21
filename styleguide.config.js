@@ -21,6 +21,8 @@ const sections = [
         'LeftMenu',
         'TopBar',
         'TokenTranslationUpdate',
+        'Menu',
+        'StatusBar',
       ];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));

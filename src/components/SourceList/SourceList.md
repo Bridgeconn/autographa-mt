@@ -1,6 +1,6 @@
-### Source Language Select
+### Source List
 
-This Select Component will list all the source language from the database. It uses react-select.
+This Select Component will list all the bible sources from the database. It uses react-select.
 
 ```js
 import SoureList from './SourceList';
@@ -10,33 +10,31 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-const [sourceLanguage, setSourceLanguage] = useState('');
-const [languageCard, setLanguageCard] = useState('');
+const [source, setSource] = useState(null);
+const [sourceCard, setSourceCard] = useState('');
 
 useEffect(() => {
-  setLanguageCard(
-    sourceLanguage ? (
+  setSourceCard(
+    source ? (
       <Card style={{ width: 400, marginTop: 20 }}>
         <CardContent>
           <Typography variant='h5' component='h5' gutterBottom>
-            {sourceLanguage.sourceName}
+            {source.sourceName}
           </Typography>
           <Typography>
-            Language Id : {sourceLanguage.language.languageId}
+            Content Type : {source.contentType.contentType}
           </Typography>
-          <Typography>
-            Language Code : {sourceLanguage.language.code}
-          </Typography>
-          <Typography>
-            Script Direction: {sourceLanguage.language.scriptDirection}
-          </Typography>
+          <Typography>Language : {source.language.language}</Typography>
+          <Typography>License : {source.license.name}</Typography>
+          <Typography>Version: {source.version.versionName}</Typography>
+          <Typography>Year: {source.year}</Typography>
         </CardContent>
       </Card>
     ) : (
       ''
     )
   );
-}, [sourceLanguage, setLanguageCard]);
+}, [source, setSourceCard]);
 <>
   <SoureList
     onChange={setSourceLanguage}
@@ -47,11 +45,11 @@ useEffect(() => {
   <Button
     variant='contained'
     color='primary'
-    onClick={() => setSourceLanguage(null)}
+    onClick={() => setSource(null)}
     style={{ margin: '10px 0' }}
   >
     Clear
   </Button>
-  {languageCard}
+  {sourceCard}
 </>;
 ```

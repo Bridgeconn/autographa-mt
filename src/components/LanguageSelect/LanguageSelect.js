@@ -5,6 +5,7 @@ import { API } from '../../store/api';
 import { Box } from '@material-ui/core';
 
 export default function LanguageSelect(props) {
+  const { value, width, onChange } = props;
   const loadOptions = async (searchQuery, loadedOptions, { page }) => {
     const response = await API.get(
       `languages?search_word=${searchQuery}&skip=${(page - 1) * 20}&limit=20`
@@ -20,16 +21,16 @@ export default function LanguageSelect(props) {
   };
 
   return (
-    <Box style={{ width: props.width || 300 }}>
+    <Box style={{ width: width || 300 }}>
       <AsyncPaginate
-        onChange={(option) => props.onChange(option)}
+        onChange={(option) => onChange(option)}
         loadOptions={loadOptions}
         getOptionValue={(option) => option.code}
         getOptionLabel={(option) => option.language}
         placeholder='Select Language'
         isSearchable
         isClearable
-        value={props.value || ''}
+        value={value === null ? '' : value}
         additional={{
           page: 1,
         }}
@@ -40,6 +41,6 @@ export default function LanguageSelect(props) {
 
 LanguageSelect.propTypes = {
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.object.isRequired,
+  value: PropTypes.object,
   width: PropTypes.number,
 };

@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import CancelIcon from '@material-ui/icons/Close';
+import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import { API } from '../../store/api';
@@ -25,9 +26,9 @@ export default function ProjectListDelete(props) {
   const { setReload, activeProjects } = useContext(ProjectsContext);
 
   const handleClickOpen = () => {
-    if (activeProjects) {
-      setOpen(true);
-    }
+    // if (activeProjects) {
+    setOpen(true);
+    // }
   };
 
   const handleDelete = (value) => {
@@ -42,15 +43,33 @@ export default function ProjectListDelete(props) {
       .catch((err) => console.log(err));
   };
 
+  const handleReactive = (value) => {
+    API.put('autographa/projects', {
+      projectId: value,
+      active: true,
+    })
+      .then((response) => {
+        setOpen(false);
+        setReload(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
     <>
-      <Tooltip title='Delete'>
-        <DeleteOutlinedIcon onClick={handleClickOpen} />
-      </Tooltip>
+      {activeProjects === true ? (
+        <Tooltip title='Deactivate'>
+          <DeleteOutlinedIcon onClick={handleClickOpen} />
+        </Tooltip>
+      ) : (
+        <Tooltip title='Activate'>
+          <RestoreFromTrashIcon onClick={handleClickOpen} />
+        </Tooltip>
+      )}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -58,22 +77,42 @@ export default function ProjectListDelete(props) {
         aria-describedby='alert-dialog-description'
       >
         <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            Are you sure you want to deactivate {props.projectName} project?
-          </DialogContentText>
+          {activeProjects === true ? (
+            <DialogContentText id='alert-dialog-description'>
+              Are you sure you want to deactivate {props.projectName} project?
+            </DialogContentText>
+          ) : (
+            <DialogContentText id='alert-dialog-description'>
+              Are you sure you want to Activate {props.projectName} project?
+            </DialogContentText>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button
-            variant='contained'
-            color='secondary'
-            className={classes.button}
-            startIcon={<DeleteOutlinedIcon />}
-            onClick={() => {
-              handleDelete(props.projectId);
-            }}
-          >
-            Deactivate
-          </Button>
+          {activeProjects === true ? (
+            <Button
+              variant='contained'
+              color='secondary'
+              className={classes.button}
+              startIcon={<DeleteOutlinedIcon />}
+              onClick={() => {
+                handleDelete(props.projectId);
+              }}
+            >
+              Deactivate
+            </Button>
+          ) : (
+            <Button
+              variant='contained'
+              color='secondary'
+              className={classes.button}
+              startIcon={<RestoreFromTrashIcon />}
+              onClick={() => {
+                handleReactive(props.projectId);
+              }}
+            >
+              Activate
+            </Button>
+          )}
           <Button
             variant='contained'
             color='default'

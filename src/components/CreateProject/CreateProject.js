@@ -38,8 +38,8 @@ const useStyles = makeStyles({
 export default function CreateProject(props) {
   const classes = useStyles(props);
   const [name, setName] = useState('');
-  const [sourceLanguage, setSourceLanguage] = useState('');
-  const [targetLanguage, setTargetLanguage] = useState('');
+  const [sourceLanguage, setSourceLanguage] = useState(null);
+  const [targetLanguage, setTargetLanguage] = useState(null);
   const [useDataForLearning, setUseDataForLearning] = useState(false);
   const [responseStatus, setResponseStatus] = React.useState([]);
 

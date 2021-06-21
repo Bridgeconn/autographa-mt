@@ -20,6 +20,7 @@ const sections = [
         'GetBibleBook',
         'LeftMenu',
         'TopBar',
+        'Menu',
         'StatusBar',
       ];
       return componentNames.map((componentName) => {

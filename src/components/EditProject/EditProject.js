@@ -1,7 +1,5 @@
 import Button from '@material-ui/core/Button';
-// import React, { useState } from 'react';
 import React, { useState, useEffect } from 'react';
-import PublishIcon from '@material-ui/icons/Publish';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -11,17 +9,19 @@ import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SourceList from '../SourceList/SourceList';
 import UploadSource from '../UploadSource/UploadSource';
-import BibleBooks from '../BibleDropDown/BibleBooks';
+import BibleDropDown from '../BibleDropDown/BibleDropDown';
 import { API } from '../../store/api';
 import SnackBar from '../SnackBar/SnackBar.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import BibleBookTable from './BibleBookTable';
+import EditIcon from '@material-ui/icons/Edit';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+
 
 const useStyles = makeStyles({
   gridLeft: {
-    // paddingLeft: '80px',
     alignItems: 'center',
     fontSize: '16px',
     marginBottom: '5px',
@@ -36,17 +36,7 @@ const useStyles = makeStyles({
     marginTop: '20px',
     fontSize: '14px',
   },
-  checkbox: {
-    marginTop: '20px',
-  },
-  button: {
-    paddingLeft: '20px',
-    marginTop: '20px',
-    marginBottom: '20px',
-  },
-  // MuiDialogPaperWidthSm: {
-  //   height: '600px',
-  // },
+
   active: {
     marginTop: '40px',
   },
@@ -57,36 +47,50 @@ export default function EditProject(props) {
   const [selectedValue, setSelectedValue] = React.useState('a');
   const [selectSourceLanguage, setSelectSourceLanguage] = React.useState('');
   const classes = useStyles(props);
-  const [bookName, setBookName] = useState([]);
   const [selectedFiles, setSelectedFiles] = React.useState('');
   const [responseStatus, setResponseStatus] = React.useState([]);
   const [loading, setLoading] = React.useState('');
   const [disableButton, setDisableButton] = React.useState(false);
   const [bookList, setBookList] = React.useState([]);
-  const [projectBooks, setProjectBooks] = useState(['gen', 'exo']);
   const [sourceBooks, setSourceBooks] = useState();
+  const [projectData, setProjectData] = React.useState();
+  
+
+
+  const fetchProjectData = () => {
+    const projectName = props.projectName;
+    API.get(`autographa/projects?project_name=${projectName}`)
+      .then(function (response) {
+        setProjectData(response.data[0]);
+      })
+      .catch((error) => {
+        console.log('error', error);
+        setResponseStatus([true, 'error', 'Error Fetching Project']);
+      });
+  };
 
   const handleClickOpen = () => {
+    fetchProjectData();
     setOpen(true);
   };
 
   useEffect(() => {
-    // callFn();
     API.get('bibles/en_KJV_1_bible/books')
       .then(function (response) {
         setSourceBooks(response.data);
       })
       .catch((error) => {
         console.log('error', error);
+        setResponseStatus([true, 'error', 'Error Fetching Source Books']);
       });
-    // console.log('ppppppppppppppppppppppppppppppppppppppppppppppppppp');
   }, [selectSourceLanguage]);
+
 
   const handleDialogClose = () => {
     setOpen(false);
     setResponseStatus([]);
     setSelectedFiles('');
-    setBookName('');
+    setBookList('');
     setSelectSourceLanguage('');
     setSelectedValue('a');
     setDisableButton(false);
@@ -95,7 +99,7 @@ export default function EditProject(props) {
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
     setSelectedFiles('');
-    setBookName('');
+    setBookList('');
     setSelectSourceLanguage('');
     setResponseStatus([]);
     setDisableButton(false);
@@ -105,16 +109,14 @@ export default function EditProject(props) {
     setResponseStatus([false]);
   };
 
-  const projectData = props.projectData;
-
-  // console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', projectData);
 
   const clearState = () => {
     setSelectedFiles('');
-    setBookName('');
+    setBookList('');
     setSelectSourceLanguage('');
     setSelectedValue('a');
     setDisableButton(false);
+    setLoading(false);
   };
 
   const readFileAsText = (file) => {
@@ -133,10 +135,7 @@ export default function EditProject(props) {
     });
   };
 
-  // const fetchSourceBible = () => {
-  //   setSelectSourceLanguage;
-  //   console.log('55555555555555555555555555555555555555555555555');
-  // };
+ 
 
   const loadText = () => {
     if (selectSourceLanguage) {
@@ -147,21 +146,21 @@ export default function EditProject(props) {
         projectId: projectData.projectId,
         selectedBooks: {
           bible: selectSourceLanguage.sourceName,
-          books: bookName,
+          books: bookList,
         },
       };
       API.put('autographa/projects', data)
         .then(function (response) {
           setResponseStatus([true, 'success', response.data.message]);
           clearState();
-          setLoading(false);
+          fetchProjectData();
         })
         .catch((error) => {
           setResponseStatus([true, 'error', error.response.data.error]);
           clearState();
-          setLoading(false);
         });
-    } else {
+        
+    } else if (selectedFiles.length > 0) {
       setLoading(true);
       setDisableButton(true);
       let files = selectedFiles;
@@ -178,34 +177,32 @@ export default function EditProject(props) {
         API.put('autographa/projects', data)
           .then(function (response) {
             setResponseStatus([true, 'success', response.data.message]);
+            fetchProjectData();
             clearState();
-            setLoading(false);
           })
           .catch((error) => {
             setResponseStatus([true, 'error', error.response.data.error]);
             clearState();
-            setLoading(false);
           });
+          
       });
     }
+    else{
+      setResponseStatus([true, 'error', "Select any books"])
+    }
   };
-  console.log(
-    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-    selectSourceLanguage
-  );
+  
   return (
     <div>
       <SnackBar responseStatus={responseStatus} handleClose={handleClose} />
-      <Button
-        variant='contained'
-        size='small'
-        color='primary'
-        onClick={handleClickOpen}
-        endIcon={<PublishIcon />}
-      >
-        Upload
-      </Button>
-      <Dialog
+      <Tooltip title='Edit Project'>
+      <IconButton aria-label='close' onClick={handleClickOpen}>
+            <EditIcon className='circle' fontSize='small' />
+          </IconButton>
+      </Tooltip>
+      
+      {projectData &&
+        <Dialog
         maxWidth='sm'
         open={open}
         onClose={handleDialogClose}
@@ -353,7 +350,7 @@ export default function EditProject(props) {
                           container
                           justify='center'
                         >
-                          <BibleBooks
+                          <BibleDropDown
                             onChange={setBookList}
                             buttonText='SELECT BOOKS'
                             sourceBooks={sourceBooks}
@@ -391,10 +388,7 @@ export default function EditProject(props) {
                       variant='contained'
                       size='small'
                       color='primary'
-                      disabled={
-                        !(bookName.length > 0 || selectedFiles.length > 0) ||
-                        disableButton
-                      }
+                      disabled={disableButton}
                     >
                       Save
                     </Button>
@@ -412,7 +406,7 @@ export default function EditProject(props) {
                       size='small'
                       color='primary'
                     >
-                      Cancel
+                      close
                     </Button>
                   </Grid>
 
@@ -434,7 +428,7 @@ export default function EditProject(props) {
             </Grid>
           </DialogContentText>
         </DialogContent>
-      </Dialog>
+      </Dialog>}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-export { default as BibleBooks } from './BibleDropDown';
+export { default as BibleDropDown } from './BibleDropDown';
 export { default as LanguageSelect } from './LanguageSelect';
 export { default as CreateProject } from './CreateProject';
 export { default as SnackBar } from './SnackBar';

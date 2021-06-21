@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function UploadSource(props) {
@@ -15,5 +15,5 @@ export default function UploadSource(props) {
 }
 
 UploadSource.propTypes = {
-  onChange: PropTypes.array,
+  onChange: PropTypes.func,
 };

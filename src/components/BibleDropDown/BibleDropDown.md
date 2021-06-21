@@ -1,6 +1,6 @@
 ```js
 import { useState } from 'react';
-import BibleBooks from './BibleBooks';
+import BibleDropDown from './BibleDropDown';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const [bookList, setBookList] = React.useState([]);
-const [projectBooks, setProjectBooks] = useState(['gen', 'exo']);
+const [projectBooks, setProjectBooks] = useState(['mat', 'exo']);
 const [sourceBooks, setSourceBooks] = useState();
 const classes = useStyles();
 
@@ -34,7 +34,6 @@ const loadBibleBooks = () => {
       setSourceBooks(response.data);
     })
     .catch((error) => {
-      console.log('error', error);
     });
 };
 
@@ -52,7 +51,7 @@ const loadBibleBooks = () => {
       </Button>
     </Grid>
     {sourceBooks && (
-      <BibleBooks
+      <BibleDropDown
         onChange={setBookList}
         buttonText='SELECT BOOKS'
         sourceBooks={sourceBooks}

@@ -6,7 +6,7 @@ This component will help to Edit the created Project
 import EditProject from './EditProject';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-const [projectName, setProjectName] = React.useState('Mission Agape');
+const [projectName, setProjectName] = React.useState('Operation Agape');
 
 
 

@@ -10,42 +10,42 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-const [source, setSource] = useState(null);
 const [sourceCard, setSourceCard] = useState('');
+const [selectSourceLanguage, setSelectSourceLanguage] = React.useState('');
 
 useEffect(() => {
   setSourceCard(
-    source ? (
+    selectSourceLanguage ? (
       <Card style={{ width: 400, marginTop: 20 }}>
         <CardContent>
           <Typography variant='h5' component='h5' gutterBottom>
-            {source.sourceName}
+            {selectSourceLanguage.sourceName}
           </Typography>
           <Typography>
-            Content Type : {source.contentType.contentType}
+            Content Type : {selectSourceLanguage.contentType.contentType}
           </Typography>
-          <Typography>Language : {source.language.language}</Typography>
-          <Typography>License : {source.license.name}</Typography>
-          <Typography>Version: {source.version.versionName}</Typography>
-          <Typography>Year: {source.year}</Typography>
+          <Typography>Language : {selectSourceLanguage.language.language}</Typography>
+          <Typography>License : {selectSourceLanguage.license.name}</Typography>
+          <Typography>Version: {selectSourceLanguage.version.versionName}</Typography>
+          <Typography>Year: {selectSourceLanguage.year}</Typography>
         </CardContent>
       </Card>
     ) : (
       ''
     )
   );
-}, [source, setSourceCard]);
+}, [selectSourceLanguage, setSourceCard]);
 <>
   <SoureList
-    onChange={setSourceLanguage}
+    onChange={setSelectSourceLanguage}
     width={300}
-    value={sourceLanguage}
+    value={selectSourceLanguage}
     componentName={'Select Source'}
   />
   <Button
     variant='contained'
     color='primary'
-    onClick={() => setSource(null)}
+    onClick={() => setSelectSourceLanguage(null)}
     style={{ margin: '10px 0' }}
   >
     Clear

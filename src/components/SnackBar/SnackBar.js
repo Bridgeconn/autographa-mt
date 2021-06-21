@@ -14,7 +14,7 @@ export default function SnackBar(props) {
     <Snackbar
       style={{ height: "100%" }}
       open={responseStatus[0]}
-      autoHideDuration={6000}
+      autoHideDuration={2000}
       onClose={props.handleClose}
     >
       <Alert

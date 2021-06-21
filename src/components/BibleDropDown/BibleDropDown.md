@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
+import { API } from '../../store/api';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,26 +23,54 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const [bookName, setBookName] = useState([]);
+const [bookList, setBookList] = React.useState([]);
+const [projectBooks, setProjectBooks] = useState(['mat', 'exo']);
+const [sourceBooks, setSourceBooks] = useState();
 const classes = useStyles();
 
+const loadBibleBooks = () => {
+  API.get('bibles/en_KJV_1_bible/books')
+    .then(function (response) {
+      setSourceBooks(response.data);
+    })
+    .catch((error) => {
+    });
+};
+
 <>
-  <BibleDropDown
-    value={bookName}
-    onChange={setBookName}
-    buttonText='SELECT BOOKS'
-  />
-  <Button
-    className={classes.button}
-    variant='contained'
-    color='secondary'
-    onClick={() => setBookName([])}
-  >
-    Clear
-  </Button>
-  {bookName.length !== 0 && (
+  <Grid container direction='row'>
+    <Grid item md={3}>
+      <Button
+        className={classes.button}
+        variant='contained'
+        color='primary'
+        size='small'
+        onClick={loadBibleBooks}
+      >
+        Load Bible
+      </Button>
+    </Grid>
+    {sourceBooks && (
+      <BibleDropDown
+        onChange={setBookList}
+        buttonText='SELECT BOOKS'
+        sourceBooks={sourceBooks}
+        projectBooks={projectBooks}
+      />
+    )}
+    <Button
+      className={classes.button}
+      variant='contained'
+      color='secondary'
+      size='small'
+      onClick={() => setBookList([])}
+    >
+      Clear
+    </Button>
+  </Grid>
+  {bookList.length !== 0 && (
     <Paper component='ul' className={classes.root}>
-      {bookName.map((data) => {
+      {bookList.map((data) => {
         return (
           <li key={data}>
             <Chip label={data} className={classes.chip} />

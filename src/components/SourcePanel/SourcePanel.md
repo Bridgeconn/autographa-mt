@@ -1,6 +1,6 @@
 This component is Source Panel.
 
-### Create Project
+### Source Panel
 
 ```js
 import SourcePanel from './SourcePanel.js';

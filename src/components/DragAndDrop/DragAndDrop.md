@@ -1,4 +1,4 @@
-### Left Menu Drag And Drop
+### Drag And Drop
 
 ```js
 import SourcePanel from '../SourcePanel';
@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 const classes = useStyles();
 const SourcePanelComponent = () => {
-const [bookChapter, setBookChapter] = useState({ book: '1sa', chapter: 1 });
-const [source, setSource] = useState([]);
+  const [bookChapter, setBookChapter] = useState({ book: '1sa', chapter: 1 });
+  const [source, setSource] = useState([]);
 
   return (
     <Paper className={classes.paper}>

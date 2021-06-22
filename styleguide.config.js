@@ -17,12 +17,15 @@ const sections = [
         'SnackBar',
         'LanguageSelect',
         'SourceList',
-        'GetBibleBook',
+        'UploadSource',
         'LeftMenu',
         'BookDropDown',
         'SourcePanel',
         'TopBar',
         'DragAndDrop',
+        'TokenTranslationUpdate',
+        'Menu',
+        'StatusBar',
       ];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));
@@ -37,7 +40,7 @@ const sections = [
   {
     name: 'Project',
     components: () => {
-      const componentNames = ['CreateProject', 'ProjectList'];
+      const componentNames = ['CreateProject', 'EditProject', 'ProjectList'];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));
         return path.resolve(

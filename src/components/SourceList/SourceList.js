@@ -18,8 +18,14 @@ export default function SourceList(props) {
         onChange={(option) => onChange(option)}
         options={sourceLanguages}
         getOptionValue={(option) => option.language.languageId}
-        getOptionLabel={(option) => option.sourceName}
-        placeholder={sourceLanguages ? 'Select Source' : 'Loading'}
+        getOptionLabel={(option) =>
+          option.language.language +
+          ' - ' +
+          option.version.versionAbbreviation +
+          ' - ' +
+          option.version.revision
+        }
+        placeholder={sourceLanguages ? props.componentName : 'Loading'}
         isSearchable
         isClearable
         value={value}

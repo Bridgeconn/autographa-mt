@@ -2,23 +2,55 @@
 
 ```js
 import { useState } from 'react';
+import SoureList from '../SourceList';
 import BookDropDown from './BookDropDown';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: theme.spacing(2),
+    margin: 'auto',
+    maxWidth: 600,
+    maxHeight: 400,
+  },
+}));
+
+const classes = useStyles();
 const [bookChapter, setBookChapter] = useState({ book: 'gen', chapter: 1 });
+const [source, setSource] = useState([]);
 <>
-  <BookDropDown
-    value={bookChapter}
-    onChange={setBookChapter}
-    buttonText='BOOKS SELECTOR'
-  />
-  <Button
-    style={{ marginLeft: 20 }}
-    variant='contained'
-    color='primary'
-    onClick={() => setBookChapter({ book: 'psa', chapter: 19 })}
-  >
-    Set
-  </Button>
+  <Grid container spacing={3} className={classes.gridContainer}>
+    <Grid item xs={6}>
+      <SoureList onChange={setSource} width={300} value={source} />
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={() => setSource([])}
+        style={{ margin: '10px 0' }}
+      >
+        Clear
+      </Button>
+    </Grid>
+    <Grid item xs={2}>
+      <BookDropDown
+        source={source}
+        value={bookChapter}
+        onChange={setBookChapter}
+        buttonText='BOOKS SELECTOR'
+      />
+    </Grid>
+    <Grid item xs={2}>
+      <Button
+        style={{ marginLeft: 20 }}
+        variant='contained'
+        color='primary'
+        onClick={() => setBookChapter({ book: 'gen', chapter: 1 })}
+      >
+        Set
+      </Button>
+    </Grid>
+  </Grid>
 </>;
 ```

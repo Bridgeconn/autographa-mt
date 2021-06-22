@@ -11,8 +11,6 @@ import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import { bibleTitus } from '../../store/bible';
-import { SourcePanelContext } from './SourcePanelContext';
 import SoureList from '../SourceList/';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,13 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const bookP = bibleTitus;
 const classes = useStyles();
 const [bookChapter, setBookChapter] = useState({ book: '1sa', chapter: 1 });
 const [source, setSource] = useState([]);
 <>
   <Paper className={classes.paper}>
-    <Grid container spacing={3} className={classes.gridContainer}>
+    <Grid container spacing={3}>
       <Grid item xs={6}>
         <Typography gutterBottom variant='h6'>
           SOURCE REFERENCE
@@ -41,13 +38,14 @@ const [source, setSource] = useState([]);
       </Grid>
       <Grid item xs={2}>
         <BookDropDown
+          source={source}
           width={88}
           value={bookChapter}
           onChange={setBookChapter}
         />
       </Grid>
     </Grid>
-    <SourcePanel source={source} value={bookChapter} />
+    <SourcePanel source={source} value={bookChapter} />;
   </Paper>
 </>;
 ```

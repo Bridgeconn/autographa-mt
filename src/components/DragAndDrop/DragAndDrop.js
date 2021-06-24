@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    height: 1300,
+    height: 800,
     width: 600,
   },
   paper: {
@@ -78,15 +78,19 @@ export default function DragAndDrop(props) {
                     return (
                       <Draggable key={id} draggableId={id} index={index}>
                         {(provided) => (
-                          <Card
-                            variant='outlined'
-                            className={classes.root}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            ref={provided.innerRef}
-                          >
-                            <CardContent>{name}</CardContent>
-                          </Card>
+                          <>
+                            {name && (
+                              <Card
+                                variant='outlined'
+                                className={classes.root}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                ref={provided.innerRef}
+                              >
+                                <CardContent>{name}</CardContent>
+                              </Card>
+                            )}
+                          </>
                         )}
                       </Draggable>
                     );

@@ -37,7 +37,7 @@ const sections = [
   {
     name: 'Project',
     components: () => {
-      const componentNames = ['CreateProject', 'EditProject', 'ProjectList'];
+      const componentNames = ['CreateProject', 'EditProject', 'ProjectList', 'Occurance'];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));
         return path.resolve(

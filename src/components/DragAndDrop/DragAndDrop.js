@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
-import Card from '@material-ui/core/Card';
+// import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 600,
+    height: '330px',
   },
   content: {
     flexGrow: 1,
@@ -21,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     maxWidth: 600,
     maxHeight: 400,
+  },
+  panel: {
+    height: '100%',
+    overflowX: 'hidden',
+    overflowY: 'auto',
   },
 }));
 
@@ -80,15 +86,22 @@ export default function DragAndDrop(props) {
                         {(provided) => (
                           <>
                             {name && (
-                              <Card
+                              <div
                                 variant='outlined'
                                 className={classes.root}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 ref={provided.innerRef}
                               >
-                                <CardContent>{name}</CardContent>
-                              </Card>
+                                <CardContent
+                                  className={classes.panel}
+                                  style={{
+                                    padding: '0.5px',
+                                  }}
+                                >
+                                  {name}
+                                </CardContent>
+                              </div>
                             )}
                           </>
                         )}

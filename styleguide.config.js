@@ -20,12 +20,13 @@ const sections = [
         'UploadSource',
         'LeftMenu',
         'BookDropDown',
-        'SourcePanel',
         'TopBar',
-        'DragAndDrop',
         'TokenTranslationUpdate',
         'Menu',
         'StatusBar',
+        'ProjectDropDown',
+        'SourcePanel',
+        'DragAndDrop',
       ];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));

@@ -21,14 +21,14 @@ export default function UploadSourceBook(props) {
       const reader = new FileReader();
       reader.onload = function (e) {
         const data = [{ USFM: e.target.result }];
-        console.log(data);
         API.post(`bibles/${source.sourceName}/books`, data)
           .then(function (response) {
             setResponseStatus([true, 'success', response.data.message]);
             setLoading(false);
           })
           .catch((e) => {
-            setResponseStatus([true, 'error', e.response.data.details]);
+            const message = e.response ? e.response.data.details : e.message;
+            setResponseStatus([true, 'error', message]);
             setLoading(false);
           });
       };

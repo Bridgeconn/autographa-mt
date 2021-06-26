@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField } from '@material-ui/core';
 import ReactSelect from 'react-select';
-import { LanguageSelect } from '..';
+import LanguageSelect from '../LanguageSelect';
 import { API } from '../../store/api';
 import SnackBar from '../SnackBar/SnackBar.js';
 

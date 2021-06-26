@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SourceList from '../SourceList/SourceList';
-import UploadSource from '../UploadSource/UploadSource';
+import UploadProjectBook from '../UploadProjectBook/UploadProjectBook';
 import BibleDropDown from '../BibleDropDown/BibleDropDown';
 import { API } from '../../store/api';
 import SnackBar from '../SnackBar/SnackBar.js';
@@ -18,7 +19,6 @@ import BibleBookTable from './BibleBookTable';
 import EditIcon from '@material-ui/icons/Edit';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-
 
 const useStyles = makeStyles({
   gridLeft: {
@@ -54,8 +54,6 @@ export default function EditProject(props) {
   const [bookList, setBookList] = React.useState([]);
   const [sourceBooks, setSourceBooks] = useState();
   const [projectData, setProjectData] = React.useState();
-  
-
 
   const fetchProjectData = () => {
     const projectName = props.projectName;
@@ -85,7 +83,6 @@ export default function EditProject(props) {
       });
   }, [selectSourceLanguage]);
 
-
   const handleDialogClose = () => {
     setOpen(false);
     setResponseStatus([]);
@@ -109,7 +106,6 @@ export default function EditProject(props) {
     setResponseStatus([false]);
   };
 
-
   const clearState = () => {
     setSelectedFiles('');
     setBookList('');
@@ -121,7 +117,7 @@ export default function EditProject(props) {
 
   const readFileAsText = (file) => {
     return new Promise(function (resolve, reject) {
-      let fr = new FileReader();
+      const fr = new FileReader();
 
       fr.onload = function () {
         resolve(fr.result);
@@ -134,8 +130,6 @@ export default function EditProject(props) {
       fr.readAsText(file);
     });
   };
-
- 
 
   const loadText = () => {
     if (selectSourceLanguage) {
@@ -159,12 +153,11 @@ export default function EditProject(props) {
           setResponseStatus([true, 'error', error.response.data.error]);
           clearState();
         });
-        
     } else if (selectedFiles.length > 0) {
       setLoading(true);
       setDisableButton(true);
-      let files = selectedFiles;
-      let readers = [];
+      const files = selectedFiles;
+      const readers = [];
       for (let i = 0; i < files.length; i++) {
         readers.push(readFileAsText(files[i]));
       }
@@ -184,251 +177,253 @@ export default function EditProject(props) {
             setResponseStatus([true, 'error', error.response.data.error]);
             clearState();
           });
-          
       });
-    }
-    else{
-      setResponseStatus([true, 'error', "Select any books"])
+    } else {
+      setResponseStatus([true, 'error', 'Select any books']);
     }
   };
-  
+
   return (
     <div>
       <SnackBar responseStatus={responseStatus} handleClose={handleClose} />
       <Tooltip title='Edit Project'>
-      <IconButton aria-label='close' onClick={handleClickOpen}>
-            <EditIcon className='circle' fontSize='small' />
-          </IconButton>
+        <IconButton aria-label='close' onClick={handleClickOpen}>
+          <EditIcon className='circle' fontSize='small' />
+        </IconButton>
       </Tooltip>
-      
-      {projectData &&
+
+      {projectData && (
         <Dialog
-        maxWidth='sm'
-        open={open}
-        onClose={handleDialogClose}
-        aria-labelledby='max-width-dialog-title'
-      >
-        <DialogTitle id='max-width-dialog-title'>
-          {'Upload Bible Books'}
-        </DialogTitle>
-        <DialogContent style={{ height: '300px' }}>
-          <DialogContentText>
-            <Grid container direction='row'>
-              <Grid item md={8}>
-                <Grid item container direction='row'>
-                  <Grid
-                    className={classes.gridLeft}
-                    item
-                    md={5}
-                    sm={12}
-                    container
-                  >
-                    <span>Name</span>
-                  </Grid>
-                  <Grid
-                    className={classes.gridRight}
-                    item
-                    md={7}
-                    sm={12}
-                    container
-                  >
-                    : {projectData.projectName}
-                  </Grid>
+          maxWidth='sm'
+          open={open}
+          onClose={handleDialogClose}
+          aria-labelledby='max-width-dialog-title'
+        >
+          <DialogTitle id='max-width-dialog-title'>
+            {'Upload Bible Books'}
+          </DialogTitle>
+          <DialogContent style={{ height: '300px' }}>
+            <DialogContentText>
+              <Grid container direction='row'>
+                <Grid item md={8}>
+                  <Grid item container direction='row'>
+                    <Grid
+                      className={classes.gridLeft}
+                      item
+                      md={5}
+                      sm={12}
+                      container
+                    >
+                      <span>Name</span>
+                    </Grid>
+                    <Grid
+                      className={classes.gridRight}
+                      item
+                      md={7}
+                      sm={12}
+                      container
+                    >
+                      : {projectData.projectName}
+                    </Grid>
 
-                  <Grid
-                    className={classes.gridLeft}
-                    item
-                    md={5}
-                    sm={12}
-                    container
-                  >
-                    <span>Source Language</span>
-                  </Grid>
-                  <Grid
-                    className={classes.gridRight}
-                    item
-                    md={7}
-                    sm={12}
-                    container
-                  >
-                    : {projectData && projectData.sourceLanguage.language}
-                  </Grid>
+                    <Grid
+                      className={classes.gridLeft}
+                      item
+                      md={5}
+                      sm={12}
+                      container
+                    >
+                      <span>Source Language</span>
+                    </Grid>
+                    <Grid
+                      className={classes.gridRight}
+                      item
+                      md={7}
+                      sm={12}
+                      container
+                    >
+                      : {projectData && projectData.sourceLanguage.language}
+                    </Grid>
 
-                  <Grid
-                    className={classes.gridLeft}
-                    item
-                    md={5}
-                    sm={12}
-                    container
-                  >
-                    <span>Target Language</span>
-                  </Grid>
-                  <Grid
-                    className={classes.gridRight}
-                    item
-                    md={7}
-                    sm={12}
-                    container
-                  >
-                    : {projectData.targetLanguage.language}
-                  </Grid>
+                    <Grid
+                      className={classes.gridLeft}
+                      item
+                      md={5}
+                      sm={12}
+                      container
+                    >
+                      <span>Target Language</span>
+                    </Grid>
+                    <Grid
+                      className={classes.gridRight}
+                      item
+                      md={7}
+                      sm={12}
+                      container
+                    >
+                      : {projectData.targetLanguage.language}
+                    </Grid>
 
-                  <Grid
-                    className={classes.gridLeft}
-                    item
-                    md={4}
-                    sm={12}
-                    container
-                  >
-                    <span>Source</span>
-                  </Grid>
-                  <Grid
-                    className={classes.gridRight}
-                    item
-                    md={8}
-                    sm={12}
-                    container
-                  >
-                    <FormControlLabel
-                      value='select'
-                      control={
-                        <Radio
-                          checked={selectedValue === 'a'}
-                          onChange={handleChange}
-                          value='a'
-                          color='default'
-                          name='radio-button-demo'
-                          inputProps={{ 'aria-label': 'A' }}
-                          size='small'
-                        />
-                      }
-                      label='Select'
-                      labelPlacement='start'
-                    />
+                    <Grid
+                      className={classes.gridLeft}
+                      item
+                      md={4}
+                      sm={12}
+                      container
+                    >
+                      <span>Source</span>
+                    </Grid>
+                    <Grid
+                      className={classes.gridRight}
+                      item
+                      md={8}
+                      sm={12}
+                      container
+                    >
+                      <FormControlLabel
+                        value='select'
+                        control={
+                          <Radio
+                            checked={selectedValue === 'a'}
+                            onChange={handleChange}
+                            value='a'
+                            color='default'
+                            name='radio-button-demo'
+                            inputProps={{ 'aria-label': 'A' }}
+                            size='small'
+                          />
+                        }
+                        label='Select'
+                        labelPlacement='start'
+                      />
 
-                    <FormControlLabel
-                      value='upload'
-                      control={
-                        <Radio
-                          checked={selectedValue === 'b'}
-                          onChange={handleChange}
-                          value='b'
-                          color='default'
-                          name='radio-button-demo'
-                          inputProps={{ 'aria-label': 'B' }}
-                          size='small'
-                        />
-                      }
-                      label='Upload'
-                      labelPlacement='start'
-                    />
-                  </Grid>
+                      <FormControlLabel
+                        value='upload'
+                        control={
+                          <Radio
+                            checked={selectedValue === 'b'}
+                            onChange={handleChange}
+                            value='b'
+                            color='default'
+                            name='radio-button-demo'
+                            inputProps={{ 'aria-label': 'B' }}
+                            size='small'
+                          />
+                        }
+                        label='Upload'
+                        labelPlacement='start'
+                      />
+                    </Grid>
 
-                  {selectedValue == 'a' ? (
-                    <Grid container direction='row'>
-                      <Grid
-                        className={classes.gridLeft}
-                        item
-                        md={7}
-                        sm={6}
-                        container
-                        justify='center'
-                      >
-                        <SourceList
-                          onChange={setSelectSourceLanguage}
-                          width={212}
-                          value={selectSourceLanguage}
-                          componentName={'Select Source'}
-                        />
-                      </Grid>
-                      {selectSourceLanguage && (
+                    {selectedValue === 'a' ? (
+                      <Grid container direction='row'>
                         <Grid
                           className={classes.gridLeft}
                           item
-                          md={5}
+                          md={7}
                           sm={6}
                           container
                           justify='center'
                         >
-                          <BibleDropDown
-                            onChange={setBookList}
-                            buttonText='SELECT BOOKS'
-                            sourceBooks={sourceBooks}
-                            projectBooks={projectData.metaData.books}
+                          <SourceList
+                            onChange={setSelectSourceLanguage}
+                            width={212}
+                            value={selectSourceLanguage}
+                            componentName={'Select Source'}
                           />
                         </Grid>
-                      )}
-                    </Grid>
-                  ) : (
+                        {selectSourceLanguage && (
+                          <Grid
+                            className={classes.gridLeft}
+                            item
+                            md={5}
+                            sm={6}
+                            container
+                            justify='center'
+                          >
+                            <BibleDropDown
+                              onChange={setBookList}
+                              buttonText='SELECT BOOKS'
+                              sourceBooks={sourceBooks}
+                              projectBooks={projectData.metaData.books}
+                            />
+                          </Grid>
+                        )}
+                      </Grid>
+                    ) : (
+                      <Grid
+                        className={classes.gridLeft}
+                        item
+                        md={10}
+                        sm={12}
+                        container
+                        justify='center'
+                      >
+                        <UploadProjectBook
+                          projectData={projectData}
+                          onChange={setSelectedFiles}
+                        />
+                      </Grid>
+                    )}
+                  </Grid>
+                  <Grid container direction='row' className={classes.active}>
                     <Grid
                       className={classes.gridLeft}
                       item
-                      md={10}
+                      md={4}
                       sm={12}
                       container
-                      justify='center'
                     >
-                      <UploadSource
-                        projectData={projectData}
-                        onChange={setSelectedFiles}
-                      />
+                      <Button
+                        onClick={loadText}
+                        variant='contained'
+                        size='small'
+                        color='primary'
+                        disabled={disableButton}
+                      >
+                        Save
+                      </Button>
                     </Grid>
-                  )}
-                </Grid>
-                <Grid container direction='row' className={classes.active}>
-                  <Grid
-                    className={classes.gridLeft}
-                    item
-                    md={4}
-                    sm={12}
-                    container
-                  >
-                    <Button
-                      onClick={loadText}
-                      variant='contained'
-                      size='small'
-                      color='primary'
-                      disabled={disableButton}
+                    <Grid
+                      className={classes.gridRight}
+                      item
+                      md={3}
+                      sm={12}
+                      container
                     >
-                      Save
-                    </Button>
-                  </Grid>
-                  <Grid
-                    className={classes.gridRight}
-                    item
-                    md={3}
-                    sm={12}
-                    container
-                  >
-                    <Button
-                      onClick={handleDialogClose}
-                      variant='contained'
-                      size='small'
-                      color='primary'
-                    >
-                      close
-                    </Button>
-                  </Grid>
+                      <Button
+                        onClick={handleDialogClose}
+                        variant='contained'
+                        size='small'
+                        color='primary'
+                      >
+                        close
+                      </Button>
+                    </Grid>
 
-                  <Grid
-                    className={classes.gridRight}
-                    item
-                    md={4}
-                    sm={12}
-                    container
-                  >
-                    {loading && <CircularProgress size='1.5rem' />}
+                    <Grid
+                      className={classes.gridRight}
+                      item
+                      md={4}
+                      sm={12}
+                      container
+                    >
+                      {loading && <CircularProgress size='1.5rem' />}
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
 
-              <Grid item md={4} container justify='flex-end'>
-                <BibleBookTable projectData={projectData} />
+                <Grid item md={4} container justify='flex-end'>
+                  <BibleBookTable projectData={projectData} />
+                </Grid>
               </Grid>
-            </Grid>
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>}
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
+EditProject.propTypes = {
+  projectName: PropTypes.string.isRequired,
+};

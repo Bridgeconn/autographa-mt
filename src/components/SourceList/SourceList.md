@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 const [sourceCard, setSourceCard] = useState('');
-const [selectSourceLanguage, setSelectSourceLanguage] = React.useState('');
+const [selectSourceLanguage, setSelectSourceLanguage] = React.useState(null);
 
 useEffect(() => {
   setSourceCard(
@@ -24,9 +24,13 @@ useEffect(() => {
           <Typography>
             Content Type : {selectSourceLanguage.contentType.contentType}
           </Typography>
-          <Typography>Language : {selectSourceLanguage.language.language}</Typography>
+          <Typography>
+            Language : {selectSourceLanguage.language.language}
+          </Typography>
           <Typography>License : {selectSourceLanguage.license.name}</Typography>
-          <Typography>Version: {selectSourceLanguage.version.versionName}</Typography>
+          <Typography>
+            Version: {selectSourceLanguage.version.versionName}
+          </Typography>
           <Typography>Year: {selectSourceLanguage.year}</Typography>
         </CardContent>
       </Card>

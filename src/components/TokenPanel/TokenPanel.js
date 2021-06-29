@@ -50,6 +50,8 @@ export default function TokenPanel(props) {
         .catch((error) => {
           console.log(error);
         });
+    } else {
+      setTokens([]);
     }
   }, [project, book]);
   const columns = [
@@ -67,13 +69,15 @@ export default function TokenPanel(props) {
         filter: false,
         sort: false,
         customBodyRender: function renderEditToken(value, row) {
-          return (
+          return project ? (
             <EditToken
               currentToken={currentToken}
               row={row.rowData}
-              projectId={project.projectId}
+              projectId={project ? project.projectId : ''}
               setOccurance={setOccurance}
             />
+          ) : (
+            ''
           );
         },
       },

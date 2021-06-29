@@ -8392,6 +8392,13 @@ react-styleguidist@^11.1.6:
     webpack-dev-server "^3.11.0"
     webpack-merge "^4.2.2"
 
+react-to-print@^2.12.6:
+  version "2.12.6"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.12.6.tgz#ac4537e12528ce865a1a652dcdfb19c5b20c9cce"
+  integrity sha512-O4hpQZX8pOd3W910n+WkT9Jvpd3tFcEWqTFHrm69bCGI/Nh5g2CoLrzaXObQW9BA9mK1K4+3qG88Q6DAJs+oWg==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-to-print@^2.8.0:
   version "2.12.4"
   resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.12.4.tgz#d9ed1447719c321798896040b0945a5c73a8f0c1"

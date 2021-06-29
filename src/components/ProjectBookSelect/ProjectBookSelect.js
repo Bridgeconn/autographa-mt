@@ -8,7 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import { Button, Box } from '@material-ui/core';
 
 export default function ProjectBookSelect(props) {
-  const { project, onChange, buttonText } = props;
+  const { project, onChange, buttonText, value } = props;
   const [bookButton, setBookButton] = useState('');
   const [open, setOpen] = useState(false);
   const bookClicked = (book) => {
@@ -40,7 +40,7 @@ export default function ProjectBookSelect(props) {
             onClick={() => setOpen(true)}
             style={{ margin: '0 10px' }}
           >
-            {buttonText}
+            {value || buttonText}
           </Button>
         ) : (
           <Box p={1}>No Books uploaded to project</Box>
@@ -49,7 +49,7 @@ export default function ProjectBookSelect(props) {
     } else {
       setBookButton('');
     }
-  }, [project]);
+  }, [project, value]);
   return (
     <div>
       {bookButton}
@@ -78,4 +78,5 @@ ProjectBookSelect.propTypes = {
   onChange: PropTypes.func.isRequired,
   buttonText: PropTypes.string.isRequired,
   project: PropTypes.object,
+  value: PropTypes.string,
 };

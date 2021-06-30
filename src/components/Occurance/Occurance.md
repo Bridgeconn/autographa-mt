@@ -2,13 +2,161 @@
 
 This component will help to display the occurances of selected Tokens
 
-```js
-import Occurance from './Occurance';
-// import Button from '@material-ui/core/Button';
+  ```js
+import React, { useState } from 'react';
+import Occurance  from './Occurance';
+import TokenTranslationUpdate from '../TokenTranslationUpdate/TokenTranslationUpdate';
+import Grid from '@material-ui/core/Grid';
 
-const occurance = [{"sentenceId":18001001,"sentence":"There was a man in the land of Uz, whose name was Job; and that man was perfect and upright, and one that feared God, and eschewed evil.","draft":"There was a man in the land of Uz, whose name was Job; and that man was perfect and upright, and one that feared God, and eschewed evil.","draftMeta":[[[0,136],[0,136],"untranslated"]]},{"sentenceId":18001002,"sentence":"And there were born unto him seven sons and three daughters.","draft":"And there were born unto him seven sons and three daughters.","draftMeta":[[[0,60],[0,60],"untranslated"]]},{"sentenceId":18001003,"sentence":"His substance also was seven thousand sheep, and three thousand camels, and five hundred yoke of oxen, and five hundred she asses, and a very great household; so that this man was the greatest of all the men of the east.","draft":"His substance also was seven thousand sheep, and three thousand camels, and five hundred yoke of oxen, and five hundred she asses, and a very great household; so that this man was the greatest of all the men of the east.","draftMeta":[[[0,220],[0,220],"untranslated"]]},{"sentenceId":18001004,"sentence":"And his sons went and feasted in their houses, every one his day; and sent and called for their three sisters to eat and to drink with them.","draft":"And his sons went and feasted in their houses, every one his day; and sent and called for their three sisters to eat and to drink with them.","draftMeta":[[[0,140],[0,140],"untranslated"]]},{"sentenceId":18001005,"sentence":"And it was so, when the days of their feasting were gone about, that Job sent and sanctified them, and rose up early in the morning, and offered burnt offerings according to the number of them all: for Job said, It may be that my sons have sinned, and cursed God in their hearts. Thus did Job continually.","draft":"And it was so, when the days of their feasting were gone about, that Job sent and sanctified them, and rose up early in the morning, and offered burnt offerings according to the number of them all: for Job said, It may be that my sons have sinned, and cursed God in their hearts. Thus did Job continually.","draftMeta":[[[0,305],[0,305],"untranslated"]]},{"sentenceId":18001006,"sentence":"¶ Now there was a day when the sons of God came to present themselves before the LORD, and Satan came also among them.","draft":"¶ Now there was a day when the sons of God came to present themselves before the LORD, and Satan came also among them.","draftMeta":[[[0,118],[0,118],"untranslated"]]},{"sentenceId":18001007,"sentence":"And the LORD said unto Satan, Whence comest thou? Then Satan answered the LORD, and said, From going to and fro in the earth, and from walking up and down in it.","draft":"And the LORD said unto Satan, Whence comest thou? Then Satan answered the LORD, and said, From going to and fro in the earth, and from walking up and down in it.","draftMeta":[[[0,161],[0,161],"untranslated"]]},{"sentenceId":18001008,"sentence":"And the LORD said unto Satan, Hast thou considered my servant Job, that there is none like him in the earth, a perfect and an upright man, one that feareth God, and escheweth evil?","draft":"And the LORD said unto Satan, Hast thou considered my servant Job, that there is none like him in the earth, a perfect and an upright man, one that feareth God, and escheweth evil?","draftMeta":[[[0,180],[0,180],"untranslated"]]},{"sentenceId":18001009,"sentence":"Then Satan answered the LORD, and said, Doth Job fear God for nought?","draft":"Then Satan answered the LORD, and said, Doth Job fear God for nought?","draftMeta":[[[0,69],[0,69],"untranslated"]]},{"sentenceId":18001010,"sentence":"Hast not thou made an hedge about him, and about his house, and about all that he hath on every side? thou hast blessed the work of his hands, and his substance is increased in the land.","draft":"Hast not thou made an hedge about him, and about his house, and about all that he hath on every side? thou hast blessed the work of his hands, and his substance is increased in the land.","draftMeta":[[[0,186],[0,186],"untranslated"]]}];
+const [tokenDetail, setTokenDetail] = React.useState({
+    "token": "which",
+    "occurrences": [
+      {
+        "sentenceId": 63001001,
+        "offset": [
+          5,
+          10
+        ]
+      },
+      {
+        "sentenceId": 63001001,
+        "offset": [
+          35,
+          40
+        ]
+      },
+      {
+        "sentenceId": 63001001,
+        "offset": [
+          56,
+          61
+        ]
+      },
+      {
+        "sentenceId": 63001001,
+        "offset": [
+          90,
+          95
+        ]
+      },
+      {
+        "sentenceId": 63001002,
+        "offset": [
+          106,
+          111
+        ]
+      },
+      {
+        "sentenceId": 63001003,
+        "offset": [
+          5,
+          10
+        ]
+      },
+      {
+        "sentenceId": 63001005,
+        "offset": [
+          25,
+          30
+        ]
+      },
+      {
+        "sentenceId": 63002007,
+        "offset": [
+          70,
+          75
+        ]
+      },
+      {
+        "sentenceId": 63002007,
+        "offset": [
+          135,
+          140
+        ]
+      },
+      {
+        "sentenceId": 63002008,
+        "offset": [
+          43,
+          48
+        ]
+      },
+      {
+        "sentenceId": 63002024,
+        "offset": [
+          33,
+          38
+        ]
+      },
+      {
+        "sentenceId": 63002024,
+        "offset": [
+          81,
+          86
+        ]
+      },
+      {
+        "sentenceId": 63002027,
+        "offset": [
+          18,
+          23
+        ]
+      },
+      {
+        "sentenceId": 63003024,
+        "offset": [
+          125,
+          130
+        ]
+      },
+      {
+        "sentenceId": 63005009,
+        "offset": [
+          96,
+          101
+        ]
+      },
+      {
+        "sentenceId": 63005016,
+        "offset": [
+          37,
+          42
+        ]
+      },
+      {
+        "sentenceId": 65001010,
+        "offset": [
+          48,
+          53
+        ]
+      },
+      {
+        "sentenceId": 65001011,
+        "offset": [
+          25,
+          30
+        ]
+      },
+      {
+        "sentenceId": 65001011,
+        "offset": [
+          49,
+          54
+        ]
+      }
+    ],
+    "translations": {}
+  });
+
+const projectId = 100001;
+const [onChangeSelector, setOnChangeSelector] = useState(1);
+
+
 
 <>
-  <Occurance occurance={occurance} bookName={'Micah'} />
+  <TokenTranslationUpdate tokenDetail={tokenDetail} projectId={projectId} onChangeSelector={ setOnChangeSelector } />
+  <Grid style={{marginLeft:'45px', marginTop:'10px'}}>
+  <Occurance currentOccurance={onChangeSelector} tokenDetail={tokenDetail} projectId={projectId}  />
+  </Grid>
 </>;
 ```

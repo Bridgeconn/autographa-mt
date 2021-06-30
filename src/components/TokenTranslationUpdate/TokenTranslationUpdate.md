@@ -7,57 +7,154 @@ import { useState, useEffect } from 'react';
 import TokenTranslationUpdate from './TokenTranslationUpdate';
 
 const [tokenDetail, setTokenDetail] = React.useState({
-  "token": "of Jesus",
+    "token": "which",
     "occurrences": [
       {
-        "sentenceId": 61001001,
+        "sentenceId": 63001001,
         "offset": [
-          18,
-          26
+          5,
+          10
         ]
       },
       {
-        "sentenceId": 61001002,
+        "sentenceId": 63001001,
         "offset": [
-          137,
-          145
+          35,
+          40
         ]
       },
       {
-        "sentenceId": 61001003,
+        "sentenceId": 63001001,
         "offset": [
-          156,
-          164
+          56,
+          61
         ]
       },
       {
-        "sentenceId": 61001007,
+        "sentenceId": 63001001,
         "offset": [
-          179,
-          187
+          90,
+          95
         ]
       },
       {
-        "sentenceId": 61001013,
+        "sentenceId": 63001002,
+        "offset": [
+          106,
+          111
+        ]
+      },
+      {
+        "sentenceId": 63001003,
+        "offset": [
+          5,
+          10
+        ]
+      },
+      {
+        "sentenceId": 63001005,
+        "offset": [
+          25,
+          30
+        ]
+      },
+      {
+        "sentenceId": 63002007,
+        "offset": [
+          70,
+          75
+        ]
+      },
+      {
+        "sentenceId": 63002007,
         "offset": [
           135,
-          143
+          140
         ]
       },
       {
-        "sentenceId": 61003021,
+        "sentenceId": 63002008,
         "offset": [
-          179,
-          187
+          43,
+          48
+        ]
+      },
+      {
+        "sentenceId": 63002024,
+        "offset": [
+          33,
+          38
+        ]
+      },
+      {
+        "sentenceId": 63002024,
+        "offset": [
+          81,
+          86
+        ]
+      },
+      {
+        "sentenceId": 63002027,
+        "offset": [
+          18,
+          23
+        ]
+      },
+      {
+        "sentenceId": 63003024,
+        "offset": [
+          125,
+          130
+        ]
+      },
+      {
+        "sentenceId": 63005009,
+        "offset": [
+          96,
+          101
+        ]
+      },
+      {
+        "sentenceId": 63005016,
+        "offset": [
+          37,
+          42
+        ]
+      },
+      {
+        "sentenceId": 65001010,
+        "offset": [
+          48,
+          53
+        ]
+      },
+      {
+        "sentenceId": 65001011,
+        "offset": [
+          25,
+          30
+        ]
+      },
+      {
+        "sentenceId": 65001011,
+        "offset": [
+          49,
+          54
         ]
       }
     ],
     "translations": {}
-});
+  });
 
-const projectId = 100048;
+const projectId = 100001;
+const [onChangeSelector, setOnChangeSelector] = useState('');
 
+
+
+{
+  console.log('<<<<<<<<<<<<<<<<',onChangeSelector)
+}
 <>
-  <TokenTranslationUpdate tokenDetail={tokenDetail} projectId={projectId} />
+  <TokenTranslationUpdate tokenDetail={tokenDetail} projectId={projectId} onChangeSelector={ setOnChangeSelector } />
 </>;
 ```

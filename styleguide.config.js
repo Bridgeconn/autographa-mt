@@ -13,16 +13,21 @@ const sections = [
     name: 'Components',
     components: () => {
       const componentNames = [
-        'BibleDropDown',
         'SnackBar',
-        'LanguageSelect',
+        'AddVersion',
+        'AddSource',
         'SourceList',
-        'UploadSource',
-        'LeftMenu',
+        'UploadSourceBook',
+        'BibleDropDown',
+        'LanguageSelect',
         'TopBar',
-        'TokenTranslationUpdate',
         'Menu',
+        'LeftMenu',
+        'TokenTranslationUpdate',
         'StatusBar',
+        'ProjectSelect',
+        'UploadProjectBook',
+        'ProjectBookSelect',
       ];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));
@@ -37,7 +42,8 @@ const sections = [
   {
     name: 'Project',
     components: () => {
-      const componentNames = ['CreateProject', 'EditProject', 'ProjectList', 'Occurance'];
+      const componentNames = ['CreateProject', 'EditProject', 'ProjectList', 'TokenPanel', 'Occurance',
+        'Draft'];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));
         return path.resolve(

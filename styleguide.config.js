@@ -47,6 +47,7 @@ const sections = [
         'EditProject',
         'ProjectList',
         'TokenPanel',
+        'Draft',
       ];
       return componentNames.map((componentName) => {
         const filename = upperFirst(camelCase(componentName));

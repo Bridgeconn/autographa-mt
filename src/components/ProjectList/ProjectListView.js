@@ -95,10 +95,10 @@ export default function ProjectListView() {
         alignItems='center'
         spacing={1}
         style={{
-          left: '62%',
+          right: 260,
           top: '1.3rem',
           position: 'relative',
-          float: 'left',
+          float: 'right',
           zIndex: 50,
           width: 'auto',
         }}

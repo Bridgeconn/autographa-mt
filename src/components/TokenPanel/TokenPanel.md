@@ -8,7 +8,6 @@ as many files are changed. So the main token panel is not functional below and i
 
 ```js
 import { useState } from 'react';
-import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import ProjectSelect from '../ProjectSelect';
 import ProjectBookSelect from '../ProjectBookSelect';
@@ -21,18 +20,24 @@ import TextField from '@material-ui/core/TextField';
 const [project, setProject] = useState(null);
 const [book, setBook] = useState('');
 const [token, setToken] = useState('');
+const handleProject = (value) => {
+  setProject(value);
+  if (value === null) {
+    setToken('');
+  }
+};
 //Need to link occurance from TokenTranslationUpdate to occurancePanel
 const setOccurance = (value) => console.log(value);
 <Box>
-  <Box display='flex'>
-    <ProjectSelect value={project} onChange={setProject} />
+  <Box display='flex' my={1}>
+    <ProjectSelect value={project} onChange={handleProject} />
     <ProjectBookSelect
       project={project}
       onChange={setBook}
-      buttonText='Project Book Selector'
+      value={book}
+      buttonText='Select Book'
     />
   </Box>
-  <Button>{book || 'No book Selected'}</Button>
   <TokenPanel
     project={project}
     book={book}
@@ -49,7 +54,7 @@ const setOccurance = (value) => console.log(value);
         placeholder='Token Data'
         multiline
         disabled
-        value={JSON.stringify(token[1], undefined, 4)}
+        value={token ? JSON.stringify(token[1], undefined, 4) : ''}
         variant='outlined'
       />
     </CardContent>

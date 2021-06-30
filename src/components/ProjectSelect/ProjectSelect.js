@@ -23,6 +23,7 @@ export default function ProjectSelect(props) {
         isSearchable
         isClearable
         value={value}
+        styles={{ menu: (provided) => ({ ...provided, zIndex: 200 }) }}
         isLoading={!projects}
         isDisabled={!projects}
       />

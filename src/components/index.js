@@ -19,3 +19,4 @@ export { default as ProjectBookSelect } from './ProjectBookSelect';
 export { default as AddVersion } from './AddVersion';
 export { default as AddSource } from './AddSource';
 export { default as UploadProjectBook } from './UploadProjectBook';
+export { default as Draft } from './Draft';

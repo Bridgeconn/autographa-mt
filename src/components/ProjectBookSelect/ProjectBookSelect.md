@@ -19,14 +19,14 @@ const [book, setBook] = useState('');
     <ProjectBookSelect
       project={project}
       onChange={setBook}
-      buttonText='Project Book Selector'
+      value={book}
+      buttonText='Select Book'
     />
   </Box>
-  <Button>{book || 'No book Selected'}</Button>
   <Button
     variant='contained'
     color='primary'
-    onClick={() => setBook(null)}
+    onClick={() => setBook('')}
     style={{ margin: '10px' }}
   >
     Clear

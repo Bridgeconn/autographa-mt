@@ -29,7 +29,7 @@ export default function SourcePanel(props) {
         return (
           <Grid item xs={12} key={i}>
             <Typography gutterBottom variant='subtitle1'>
-              {verses.reference.verseNumber + ' ' + verses.verseText}
+              {verses.surrogateId.split(':')[1] + ' ' + verses.sentence}
             </Typography>
           </Grid>
         );

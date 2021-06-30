@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TranslationComponent() {
+export default function TranslationComponent(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
 
@@ -33,24 +33,6 @@ export default function TranslationComponent() {
     <>
       {open && (
         <Paper className={classes.paper} style={{ width: 900 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={6}>
-              <Typography gutterBottom variant='h6'>
-                TRANSLATION WORD
-              </Typography>
-            </Grid>
-            <Grid item xs={2}></Grid>
-            <Grid item xs={2}></Grid>
-            <Grid item xs={2} style={{ paddingLeft: 0 }}>
-              <IconButton
-                aria-label='close'
-                className={classes.closeButton}
-                onClick={dialogClose}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <Typography gutterBottom variant='body1'>

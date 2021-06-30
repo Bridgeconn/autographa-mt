@@ -3,11 +3,11 @@ import MUIDataTable from 'mui-datatables';
 import { ProjectsContext } from './ProjectContext';
 import ProjectListDelete from './ProjectListDelete';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import ProjectListEdit from './ProjectListEdit';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
+import EditProject from '../EditProject';
 
 const columns = [
   {
@@ -41,7 +41,7 @@ const columns = [
       sort: false,
       // eslint-disable-next-line react/display-name
       customBodyRender: (value) => {
-        return <ProjectListEdit projectName={value} />;
+        return <EditProject projectName={value} />;
       },
     },
   },

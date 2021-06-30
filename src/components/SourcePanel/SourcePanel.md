@@ -11,7 +11,8 @@ import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import SoureList from '../SourceList/';
+import Box from '@material-ui/core/Box';
+import ProjectSelect from '../ProjectSelect';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -24,15 +25,9 @@ const useStyles = makeStyles((theme) => ({
 
 const classes = useStyles();
 const [bookChapter, setBookChapter] = useState({ book: '1sa', chapter: 1 });
-const [selectProject, setSelectProject] = React.useState('');
-const [source, setSource] = useState([]);
+const [project, setProject] = useState([]);
 <>
-  <ProjectDropDown
-    onChange={setSelectProject}
-    width={300}
-    value={selectProject}
-    componentName={'Select Project'}
-  />
+  <ProjectSelect value={project} onChange={setProject} />
   <Paper className={classes.paper}>
     <Grid container spacing={3}>
       <Grid item xs={6}>
@@ -42,14 +37,14 @@ const [source, setSource] = useState([]);
       </Grid>
       <Grid item xs={2}>
         <BookDropDown
-          source={source}
-          width={88}
+          selectProject={project}
           value={bookChapter}
           onChange={setBookChapter}
+          width={88}
         />
       </Grid>
     </Grid>
-    <SourcePanel source={source} value={bookChapter} />;
+    <SourcePanel project={project} value={bookChapter} />;
   </Paper>
 </>;
 ```

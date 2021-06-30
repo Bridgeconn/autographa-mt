@@ -74,18 +74,17 @@ const useStyles = makeStyles({
 export default function StatusBarView(props) {
   const { progressData } = useContext(StatusBarContext);
   const classes = useStyles();
-  const translation = [];
-  if (progressData.confirmed !== 0) {
-    translation.push(progressData.confirmed);
-  } else {
-    translation.push(0);
-  }
+  let translation = 0;
+  translation = progressData.confirmed;
   const result =
     progressData.confirmed +
     progressData.suggestion +
     progressData.untranslated;
 
-  const progressPercent = Math.floor((translation / result) * 100);
+  let progressPercent = 0;
+  if (result !== 0) {
+    progressPercent = Math.floor((translation / result) * 100);
+  }
 
   return (
     <div className={classes.root}>
@@ -97,7 +96,3 @@ export default function StatusBarView(props) {
     </div>
   );
 }
-
-// StatusBarView.propTypes = {
-//   progressPer: PropTypes.number.isRequired,
-// };

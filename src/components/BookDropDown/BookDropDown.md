@@ -7,6 +7,7 @@ import BookDropDown from './BookDropDown';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import ProjectSelect from '../ProjectSelect';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -20,10 +21,12 @@ const useStyles = makeStyles((theme) => ({
 const classes = useStyles();
 const [bookChapter, setBookChapter] = useState({ book: 'gen', chapter: 1 });
 const [source, setSource] = useState([]);
+const [project, setProject] = useState([]);
+
 <>
   <Grid container spacing={3} className={classes.gridContainer}>
     <Grid item xs={6}>
-      <SoureList onChange={setSource} width={300} value={source} />
+      <ProjectSelect value={project} onChange={setProject} />
       <Button
         variant='contained'
         color='primary'
@@ -35,7 +38,7 @@ const [source, setSource] = useState([]);
     </Grid>
     <Grid item xs={2}>
       <BookDropDown
-        source={source}
+        selectProject={project}
         value={bookChapter}
         onChange={setBookChapter}
         buttonText='BOOKS SELECTOR'

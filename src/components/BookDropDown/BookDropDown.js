@@ -49,22 +49,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BookDropDown(props) {
   const classes = useStyles();
-  const { value, onChange, width, source } = props;
+  const { value, onChange, width, selectProject } = props;
   const [booksValue, setBooksValue] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [book, setBook] = React.useState([]);
   const [chapter, setChapter] = React.useState(1);
 
   useEffect(() => {
-    if (source !== undefined) {
-      API.get(`/bibles/${source.sourceName}/versification`)
+    if (selectProject !== undefined) {
+      API.get(
+        `/autographa/project/versification?project_id=${selectProject.projectId}`
+      )
         .then((response) => {
-          console.log(response.data.maxVerses);
+          console.log(response);
           setBooksValue(response.data.maxVerses);
         })
         .catch((err) => console.log(err));
     }
-  }, [source]);
+  }, [selectProject]);
 
   const closeBookListing = () => {
     onChange({ book, chapter });
@@ -120,7 +122,7 @@ export default function BookDropDown(props) {
       return (
         <Grid item xs={4}>
           <Typography gutterBottom variant='h10'>
-            No Source selected
+            No books uploaded
           </Typography>
         </Grid>
       );
@@ -198,7 +200,6 @@ export default function BookDropDown(props) {
 BookDropDown.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.array.isRequired,
-  buttonText: PropTypes.string,
   width: PropTypes.number,
-  source: PropTypes.string,
+  selectProject: PropTypes.object,
 };

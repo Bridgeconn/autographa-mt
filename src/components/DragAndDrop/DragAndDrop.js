@@ -2,20 +2,26 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
-// import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import { Typography } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+// import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 600,
-    height: '330px',
+    // height: '330px',
+    height: '100%',
+    overflowX: 'hidden',
+    overflowY: 'auto',
   },
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    height: 800,
     width: 600,
+    height: 1000,
   },
   paper: {
     padding: theme.spacing(2),
@@ -30,38 +36,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
+function DragPanel(props) {
+  const classes = useStyles();
+  const { label, status, onClick, name } = props;
   return (
     <>
-      {value === index && (
-        <Box
-          p={1}
-          flexGrow={1}
-          role='tabpanel'
-          hidden={value !== index}
-          id={`vertical-tabpanel-${index}`}
-          aria-labelledby={`vertical-tab-${index}`}
-          {...other}
+      {status && (
+        <CardContent
+          className={classes.root}
+          style={{
+            padding: '0.5px',
+          }}
         >
-          {children}
-        </Box>
+          <Box display='flex'>
+            <Box flexGrow={1}>
+              <Typography gutterBottom variant='h6'>
+                {label}
+              </Typography>
+            </Box>
+            <Box>
+              <IconButton
+                aria-label='close'
+                className={classes.closeButton}
+                onClick={onClick}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </Box>
+          {name}
+        </CardContent>
       )}
     </>
   );
 }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
+DragPanel.propTypes = {
+  label: PropTypes.string,
+  status: PropTypes.bool,
+  onClick: PropTypes.func,
+  name: PropTypes.node,
 };
 
 export default function DragAndDrop(props) {
   const classes = useStyles();
-  const { componentObject } = props;
-  const [value] = React.useState(0);
+  const { componentObject, menuItems } = props;
   const [characters, updateCharacters] = useState(componentObject);
 
   const handleOnDragEnd = (result) => {
@@ -75,53 +94,53 @@ export default function DragAndDrop(props) {
   return (
     <div>
       <div className={classes.content}>
-        <TabPanel value={value} index={0} style={{ overflowX: 'auto' }}>
-          <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId='characters'>
-              {(provided) => (
-                <ul {...provided.droppableProps} ref={provided.innerRef}>
-                  {characters.map(({ id, name }, index) => {
-                    return (
-                      <Draggable key={id} draggableId={id} index={index}>
-                        {(provided) => (
-                          <>
-                            {name && (
-                              <div
-                                variant='outlined'
-                                className={classes.root}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                ref={provided.innerRef}
-                              >
-                                <CardContent
-                                  className={classes.panel}
-                                  style={{
-                                    padding: '0.5px',
-                                  }}
-                                >
-                                  {name}
-                                </CardContent>
-                              </div>
-                            )}
-                          </>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </TabPanel>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId='characters'>
+            {(provided) => (
+              <ul {...provided.droppableProps} ref={provided.innerRef}>
+                {characters.map((item, index) => {
+                  const menuItem = menuItems[index];
+                  const { id, name, onClick, label, status } = item;
+                  console.log(label);
+                  return (
+                    <Draggable key={id} draggableId={id} index={index}>
+                      {(provided) => (
+                        <>
+                          {name && (
+                            <div
+                              variant='outlined'
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              ref={provided.innerRef}
+                            >
+                              {console.log(item.label)}
+                              <DragPanel
+                                {...menuItem}
+                                name={name}
+                                labels={label}
+                                statusValue={status}
+                                onClicks={onClick}
+                              />
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </div>
   );
 }
 
 DragAndDrop.propTypes = {
-  value: PropTypes.any.isRequired,
   onChange: PropTypes.func.isRequired,
   source: PropTypes.any,
   componentObject: PropTypes.object,
+  menuItems: PropTypes.object,
 };

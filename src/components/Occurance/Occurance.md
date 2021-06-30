@@ -1,10 +1,12 @@
-### Token Translation Updation
+### Occurance Panel
 
-This component will help to update the token Translation
+This component will help to display the occurances of selected Tokens
 
-```js
-import { useState, useEffect } from 'react';
-import TokenTranslationUpdate from './TokenTranslationUpdate';
+  ```js
+import React, { useState } from 'react';
+import Occurance  from './Occurance';
+import TokenTranslationUpdate from '../TokenTranslationUpdate/TokenTranslationUpdate';
+import Grid from '@material-ui/core/Grid';
 
 const [tokenDetail, setTokenDetail] = React.useState({
     "token": "which",
@@ -147,10 +149,14 @@ const [tokenDetail, setTokenDetail] = React.useState({
   });
 
 const projectId = 100001;
-const [onChangeSelector, setOnChangeSelector] = useState('');
+const [onChangeSelector, setOnChangeSelector] = useState(1);
+
 
 
 <>
   <TokenTranslationUpdate tokenDetail={tokenDetail} projectId={projectId} onChangeSelector={ setOnChangeSelector } />
+  <Grid style={{marginLeft:'45px', marginTop:'10px'}}>
+  <Occurance currentOccurance={onChangeSelector} tokenDetail={tokenDetail} projectId={projectId}  />
+  </Grid>
 </>;
 ```

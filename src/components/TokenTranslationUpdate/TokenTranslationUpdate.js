@@ -26,22 +26,22 @@ const useStyles = makeStyles({
     marginTop: '10px',
   },
   closeButton: {
-    padding:0,
+    padding: 0,
   },
-  closeButtonGrid:{
-    textAlign:'right',
-    margin:'4px'
+  closeButtonGrid: {
+    textAlign: 'right',
+    margin: '4px'
   },
-  DialogContainer:{
-    width:'320px',
-    paddingBottom:'15px'
+  DialogContainer: {
+    width: '320px',
+    paddingBottom: '15px'
   },
-  replaceButton:{
-    marginTop:'3px',
-    paddingTop:'2px',
-    paddingRight:'8px',
-    paddingLeft:'8px',
-    paddingBottom:'2px'
+  replaceButton: {
+    marginTop: '3px',
+    paddingTop: '2px',
+    paddingRight: '8px',
+    paddingLeft: '8px',
+    paddingBottom: '2px'
   }
 });
 
@@ -56,6 +56,7 @@ export default function TokenTranslationUpdate(props) {
   const tokenTranslationCount = props.tokenDetail.occurrences.length;
   const [responseStatus, setResponseStatus] = React.useState([]);
   const [open, setOpen] = React.useState(false);
+  const { onChangeSelector } = props;
 
   const handleClose = () => {
     setResponseStatus([false]);
@@ -69,6 +70,9 @@ export default function TokenTranslationUpdate(props) {
     setOpen(false);
   };
 
+  useEffect(() => {
+    onChangeSelector(tokenSelected);
+  }, [tokenSelected])
 
   const next = () => {
     if (tokenSelected < tokenTranslationCount) {
@@ -80,31 +84,31 @@ export default function TokenTranslationUpdate(props) {
       API.get(
         `autographa/project/token-translations?project_id=${projectId}&token=${token}&sentence_id=${sentenceId.sentenceId}&offset=${offset1}&offset=${offset2}`)
         .then(function (response) {
-          if(response.data.translation){ 
+          if (response.data.translation) {
             setTokenTranslation(response.data.translation);
-          }else{
+          } else {
             setTokenTranslation('');
           }
         })
         .catch((error) => {
           setResponseStatus([true, 'error', error.response.data.error]);
         });
-      }
+    }
   };
 
   const previous = () => {
     if (tokenSelected > 1) {
       setTokenSelected(tokenSelected - 1);
       setOccurance(props.tokenDetail.occurrences[tokenSelected - 2]);
-      const sentenceId = props.tokenDetail.occurrences[tokenSelected-2];
+      const sentenceId = props.tokenDetail.occurrences[tokenSelected - 2];
       const offset1 = sentenceId.offset[0];
       const offset2 = sentenceId.offset[1];
       API.get(
         `autographa/project/token-translations?project_id=${projectId}&token=${token}&sentence_id=${sentenceId.sentenceId}&offset=${offset1}&offset=${offset2}`)
         .then(function (response) {
-          if(response.data.translation){ 
+          if (response.data.translation) {
             setTokenTranslation(response.data.translation);
-          }else{
+          } else {
             setTokenTranslation('');
           }
         })
@@ -121,20 +125,20 @@ export default function TokenTranslationUpdate(props) {
     API.get(
       `autographa/project/token-translations?project_id=${projectId}&token=${token}&sentence_id=${sentenceId.sentenceId}&offset=${offset1}&offset=${offset2}`)
       .then(function (response) {
-        if(response.data.translation){ 
+        if (response.data.translation) {
           setTokenTranslation(response.data.translation);
-        }else{
+        } else {
           setTokenTranslation('');
         }
       })
       .catch((error) => {
         setResponseStatus([true, 'error', error.response.data.error]);
       });
-      setOccurance(sentenceId)
+    setOccurance(sentenceId)
   }, []);
 
 
-  const tokenApiCall = (data) =>{
+  const tokenApiCall = (data) => {
     API.put(`autographa/project/tokens?project_id=${projectId}`, data)
       .then(function (response) {
         setResponseStatus([true, 'success', response.data.message]);
@@ -152,25 +156,25 @@ export default function TokenTranslationUpdate(props) {
       const data = [
         { token: token, occurrences: [occurance], translation: tokenTranslation },
       ];
-      tokenApiCall(data)  
-    }else if(replaceType === 'replaceAll'){
+      tokenApiCall(data)
+    } else if (replaceType === 'replaceAll') {
       const allOccurance = props.tokenDetail.occurrences;
       const data = [
-        { token: token, occurrences:allOccurance , translation: tokenTranslation },
+        { token: token, occurrences: allOccurance, translation: tokenTranslation },
       ];
       tokenApiCall(data);
       handleDialogClose();
-    }else if(replaceType === 'remainingTokens'){
-      const remOccurance = (props.tokenDetail.occurrences).slice(tokenSelected-1);
+    } else if (replaceType === 'remainingTokens') {
+      const remOccurance = (props.tokenDetail.occurrences).slice(tokenSelected - 1);
       const data = [
         { token: token, occurrences: remOccurance, translation: tokenTranslation },
       ];
       tokenApiCall(data);
       handleDialogClose();
-    }else{
+    } else {
       console.log("no types")
     }
-        
+
   };
 
   return (
@@ -182,7 +186,7 @@ export default function TokenTranslationUpdate(props) {
           autoComplete='current-password'
           variant='outlined'
           size='small'
-          value={tokenTranslation}
+          value={tokenTranslation ? tokenTranslation : ''}
           onChange={(e) => setTokenTranslation(e.target.value)}
         />
       </Grid>
@@ -242,14 +246,14 @@ export default function TokenTranslationUpdate(props) {
                 fontSize='small'
                 aria-label='close'
                 className={classes.closeButton}
-                  onClick={handleDialogClose}
+                onClick={handleDialogClose}
               >
                 <CloseIcon />
               </IconButton>
             </Grid>
             <Grid item md={7} className={classes.tokenReplace}>
               <Button
-              className={classes.replaceButton}
+                className={classes.replaceButton}
                 variant='contained'
                 color='primary'
                 size='small'
@@ -257,16 +261,16 @@ export default function TokenTranslationUpdate(props) {
                   tokenReplace('remainingTokens');
                 }}
               >
-               Replace Remaining
+                Replace Remaining
               </Button>
-              </Grid>
+            </Grid>
             <Grid item md={5} className={classes.tokenReplace}>
               <Button className={classes.replaceButton} variant='contained' color='primary' size='small' onClick={() => {
-                  tokenReplace('replaceAll');
-                }}>
+                tokenReplace('replaceAll');
+              }}>
                 Replace All
               </Button>
-              </Grid>
+            </Grid>
           </Grid>
         </Dialog>
       </Grid>

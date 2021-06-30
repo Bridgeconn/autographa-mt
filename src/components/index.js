@@ -13,6 +13,7 @@ export { default as DragAndDrop } from './DragAndDrop';
 export { default as EditProject } from './EditProject';
 export { default as Menu } from './Menu';
 export { default as StatusBar } from './StatusBar';
+export { default as Occurance } from './Occurance';
 export { default as TokenPanel } from './TokenPanel';
 export { default as ProjectSelect } from './ProjectSelect';
 export { default as ProjectBookSelect } from './ProjectBookSelect';

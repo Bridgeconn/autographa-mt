@@ -4,8 +4,11 @@ import MUIDataTable from 'mui-datatables';
 import TokenTranslationUpdate from '../TokenTranslationUpdate';
 import { API } from '../../store/api';
 
+
 const EditToken = ({ currentToken, row, projectId, setOccurance }) => {
   const [show, setShow] = useState(false);
+  const [onChangeSelector, setOnChangeSelector] = useState('');
+
   return (
     <div
       style={{ minHeight: 30, minWidth: 200 }}
@@ -20,6 +23,7 @@ const EditToken = ({ currentToken, row, projectId, setOccurance }) => {
           }}
           projectId={projectId}
           setOccurance={setOccurance}
+          onChangeSelector={setOnChangeSelector}
         />
       ) : (
         <div>{show && 'Click Row to edit token'}</div>

@@ -4,14 +4,15 @@ Have some issue with this RCL have to rework on it
 
 ```js
 import Menu from '../Menu';
-import SourcePanelComponent from './SourcePanelComponent';
 import DragAndDrop from './DragAndDrop';
 import TranslationComponent from './TranslationComponent';
 import { useState } from 'react';
+import ProjectList from '../ProjectList';
 
 const [translationWordStatus, setTranslationWordStatus] = useState(true);
 const [sourceReferenceStatus, setSourceReferenceStatus] = useState(true);
 const [open, setOpen] = React.useState(true);
+const [project, setProject] = useState([]);
 
 const translationWordClick = () => {
   setTranslationWordStatus(!translationWordStatus);
@@ -28,7 +29,7 @@ const menuItems = [
     status: translationWordStatus,
   },
   {
-    label: 'Source Reference',
+    label: 'Project List',
     onClick: sourceReferenceClick,
     status: sourceReferenceStatus,
   },
@@ -40,14 +41,14 @@ const dragDropComponents = [
       <TranslationComponent translationWordStatus={translationWordStatus} />
     ),
     id: 'kvin',
-    label: 'Translation Word',
   },
   {
     name: (
-      <SourcePanelComponent sourceReferenceStatus={sourceReferenceStatus} />
+      <div style={{ maxHeight: 500, overflow: 'auto' }}>
+        <ProjectList />
+      </div>
     ),
     id: 'kving',
-    label: 'Source Reference',
   },
 ];
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SourcePanel from '../SourcePanel';
-import SoureList from '../SourceList/';
+// import SoureList from '../SourceList/';
+// import ProjectSelect from '../ProjectSelect';
 // import ProjectList from '../ProjectList';
 import BookDropDown from '../BookDropDown';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,8 +22,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SourcePanelComponent(props) {
   const classes = useStyles();
+  const { project } = props;
+  console.log('SOURCEPANEL', project);
   const [bookChapter, setBookChapter] = useState({ book: '1sa', chapter: 1 });
-  const [source, setSource] = useState([]);
+  // const [source, setSource] = useState([]);
+  // const [project, setProject] = useState([]);
 
   return (
     <>
@@ -46,18 +50,23 @@ export default function SourcePanelComponent(props) {
               style={{ paddingLeft: '0px', paddingRight: '0px' }}
             ></Grid>
             <Grid item xs={4}>
-              <SoureList onChange={setSource} width={150} value={source} />
+              {/* <ProjectSelect
+                value={project}
+                onChange={setProject}
+                style={{ width: 150 }}
+              /> */}
+              {/* <SoureList onChange={setSource} width={150} value={source} /> */}
             </Grid>
             <Grid item xs={2} style={{ paddingLeft: 0 }}>
               <BookDropDown
-                source={source}
+                selectProject={project}
                 width={88}
                 value={bookChapter}
                 onChange={setBookChapter}
               />
             </Grid>
           </Grid>
-          <SourcePanel source={source} value={bookChapter} />
+          <SourcePanel project={project} value={bookChapter} />
         </Paper>
       )}
     </>
@@ -66,4 +75,5 @@ export default function SourcePanelComponent(props) {
 
 SourcePanelComponent.propTypes = {
   sourceReferenceStatus: PropTypes.any,
+  project: PropTypes.any,
 };

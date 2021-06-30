@@ -150,10 +150,6 @@ const projectId = 100001;
 const [onChangeSelector, setOnChangeSelector] = useState('');
 
 
-
-{
-  console.log('<<<<<<<<<<<<<<<<',onChangeSelector)
-}
 <>
   <TokenTranslationUpdate tokenDetail={tokenDetail} projectId={projectId} onChangeSelector={ setOnChangeSelector } />
 </>;

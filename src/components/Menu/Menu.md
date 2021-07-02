@@ -1,31 +1,47 @@
-### Sample Menu
+### Menu
+
+Demo Menu to show and hide screen elements
 
 ```js
 import { useState, useEffect } from 'react';
+import Menu from './Menu';
+import Box from '@material-ui/core/Box';
+
 const [translationWordStatus, setTranslationWordStatus] = useState(true);
 const [sourceReferenceStatus, setSourceReferenceStatus] = useState(false);
 
 const translationWordClick = () => {
-	setTranslationWordStatus(!translationWordStatus);
+  setTranslationWordStatus(!translationWordStatus);
 };
 
 const sourceReferenceClick = () => {
-	setSourceReferenceStatus(!sourceReferenceStatus);
+  setSourceReferenceStatus(!sourceReferenceStatus);
 };
 
-const menuItems =[
+const menuItems = [
   {
-    label:"Translation Word",
+    label: 'Translation Word',
     onClick: translationWordClick,
-    status: translationWordStatus
+    status: translationWordStatus,
   },
   {
-    label:"Source Reference",
+    label: 'Source Reference',
     onClick: sourceReferenceClick,
-    status: sourceReferenceStatus
-  },]
+    status: sourceReferenceStatus,
+  },
+];
 
-
-import Menu from './Menu';
-<Menu buttonLabel="View" menuItems={menuItems} />;
+<>
+  <Menu buttonLabel='View' menuItems={menuItems} />
+  {translationWordStatus && (
+    <Box border={1} p={2} m={1}>
+      Demo Translation Word Panel
+    </Box>
+  )}
+  {sourceReferenceStatus && (
+    <Box border={1} p={2} m={1}>
+      Demo Source Reference Panel
+    </Box>
+  )}
+</>;
 ```

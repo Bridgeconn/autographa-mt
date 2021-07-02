@@ -40,4 +40,5 @@ SourceList.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.object,
   width: PropTypes.number,
+  componentName: PropTypes.string,
 };

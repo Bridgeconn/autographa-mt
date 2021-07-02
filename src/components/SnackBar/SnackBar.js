@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -8,20 +8,16 @@ function Alert(props) {
 }
 
 export default function SnackBar(props) {
-  const responseStatus = props.responseStatus;
+  const { responseStatus, handleClose } = props;
 
   return (
     <Snackbar
-      style={{ height: "100%" }}
+      style={{ height: '100%' }}
       open={responseStatus[0]}
       autoHideDuration={2000}
       onClose={props.handleClose}
     >
-      <Alert
-        onClose={responseStatus[0]}
-        severity={responseStatus[1]}
-        onClose={props.handleClose}
-      >
+      <Alert severity={responseStatus[1]} onClose={handleClose}>
         {responseStatus[2]}
       </Alert>
     </Snackbar>
@@ -30,4 +26,5 @@ export default function SnackBar(props) {
 
 SnackBar.propTypes = {
   handleClose: PropTypes.func,
+  responseStatus: PropTypes.array,
 };

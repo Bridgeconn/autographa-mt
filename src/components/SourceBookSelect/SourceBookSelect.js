@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BibleDropDown(props) {
+export default function SourceBookSelect(props) {
   const classes = useStyles();
   const { projectBooks, onChange, buttonText, sourceBooks } = props;
   const [bookList, setBookList] = React.useState([]);
@@ -111,6 +111,7 @@ export default function BibleDropDown(props) {
         if (checkProjectList === true) {
           return (
             <Button
+              key={i}
               size='small'
               variant='outlined'
               className={classes.bookButton}
@@ -133,6 +134,7 @@ export default function BibleDropDown(props) {
         } else {
           return (
             <Button
+              key={i}
               size='small'
               variant='outlined'
               className={classes.bookButton}
@@ -161,7 +163,7 @@ export default function BibleDropDown(props) {
     const checkValue = e.target.checked;
     const Books = [];
     if (checkValue) {
-      sourceBooks.map((bk) => {
+      sourceBooks.forEach((bk) => {
         const currentBook = bk.book.bookCode;
         if (!projectBooks.includes(currentBook)) {
           Books.push(bk.book.bookCode);
@@ -250,8 +252,9 @@ export default function BibleDropDown(props) {
   );
 }
 
-BibleDropDown.propTypes = {
+SourceBookSelect.propTypes = {
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.array.isRequired,
+  sourceBooks: PropTypes.array,
+  projectBooks: PropTypes.array,
   buttonText: PropTypes.string,
 };

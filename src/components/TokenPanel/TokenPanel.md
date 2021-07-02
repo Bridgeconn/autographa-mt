@@ -26,7 +26,7 @@ const handleProject = (value) => {
     setToken('');
   }
 };
-//Need to link occurance from TokenTranslationUpdate to occurancePanel
+//Need to link occurance from TokenEdit to occurancePanel
 const setOccurance = (value) => console.log(value);
 <Box>
   <Box display='flex' my={1}>

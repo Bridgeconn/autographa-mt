@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 const [sourceCard, setSourceCard] = useState('');
-const [selectProject, setSelectProject] = React.useState('');
+const [selectProject, setSelectProject] = React.useState(null);
 
 <>
   <ProjectDropDown
@@ -30,5 +30,4 @@ const [selectProject, setSelectProject] = React.useState('');
   </Button>
   {sourceCard}
 </>;
-// {console.log(selectProject)}
 ```

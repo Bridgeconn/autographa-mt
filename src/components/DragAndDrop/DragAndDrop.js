@@ -101,7 +101,6 @@ export default function DragAndDrop(props) {
                 {characters.map((item, index) => {
                   const menuItem = menuItems[index];
                   const { id, name, onClick, label, status } = item;
-                  console.log(label);
                   return (
                     <Draggable key={id} draggableId={id} index={index}>
                       {(provided) => (
@@ -113,7 +112,6 @@ export default function DragAndDrop(props) {
                               {...provided.dragHandleProps}
                               ref={provided.innerRef}
                             >
-                              {console.log(item.label)}
                               <DragPanel
                                 {...menuItem}
                                 name={name}
@@ -141,6 +139,6 @@ export default function DragAndDrop(props) {
 DragAndDrop.propTypes = {
   onChange: PropTypes.func.isRequired,
   source: PropTypes.any,
-  componentObject: PropTypes.object,
+  componentObject: PropTypes.array,
   menuItems: PropTypes.object,
 };

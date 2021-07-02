@@ -22,7 +22,6 @@ const SourcePanelContextProvider = (props) => {
       `/autographa/project/sentences?project_id=${project.projectId}&sentence_id_range=${from}&sentence_id_range=${to}&with_draft=false`
     )
       .then((response) => {
-        console.log('RESPONSE', response);
         setVerses(response.data);
       })
       .catch((err) => console.log(err));

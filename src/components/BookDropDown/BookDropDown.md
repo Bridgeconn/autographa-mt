@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 const classes = useStyles();
 const [bookChapter, setBookChapter] = useState({ book: 'gen', chapter: 1 });
 const [source, setSource] = useState([]);
-const [project, setProject] = useState([]);
+const [project, setProject] = useState(null);
 
 <>
   <Grid container spacing={3} className={classes.gridContainer}>

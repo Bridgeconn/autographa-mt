@@ -10,7 +10,7 @@ import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SourceList from '../SourceList/SourceList';
 import UploadProjectBook from '../UploadProjectBook/UploadProjectBook';
-import BibleDropDown from '../BibleDropDown/BibleDropDown';
+import SourceBookSelect from '../SourceBookSelect/SourceBookSelect';
 import { API } from '../../store/api';
 import SnackBar from '../SnackBar/SnackBar.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -341,7 +341,7 @@ export default function EditProject(props) {
                             container
                             justify='center'
                           >
-                            <BibleDropDown
+                            <SourceBookSelect
                               onChange={setBookList}
                               buttonText='SELECT BOOKS'
                               sourceBooks={sourceBooks}

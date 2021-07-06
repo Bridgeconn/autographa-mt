@@ -1,6 +1,8 @@
 ### Add Bible Source
 
-This is a demo Add a Bible Source, to which books can be added and then it can be used in projects
+This is a demo Add a Bible Source
+We can later add books using UploadSourceBook
+We can then use sources in projects.
 
 ```js
 import AddSource from './AddSource';

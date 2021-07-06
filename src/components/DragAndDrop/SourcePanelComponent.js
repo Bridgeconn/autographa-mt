@@ -23,10 +23,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SourcePanelComponent(props) {
   const classes = useStyles();
   const { project } = props;
-  console.log('SOURCEPANEL', project);
   const [bookChapter, setBookChapter] = useState({ book: '1sa', chapter: 1 });
-  // const [source, setSource] = useState([]);
-  // const [project, setProject] = useState([]);
 
   return (
     <>

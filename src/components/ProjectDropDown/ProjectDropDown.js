@@ -16,10 +16,8 @@ export default function ProjectDropDown(props) {
   }, []);
   return (
     <Box style={{ width: width || 300 }}>
-      {/* {console.log(sourceLanguages)} */}
       <Select
         onChange={(option) => onChange(option)}
-        // projectId={(option) => projectId(option.projectId)}
         options={sourceLanguages}
         getOptionValue={(option) => option.projectId}
         getOptionLabel={(option) =>
@@ -42,8 +40,7 @@ export default function ProjectDropDown(props) {
 
 ProjectDropDown.propTypes = {
   onChange: PropTypes.func,
-  value: PropTypes.string,
+  value: PropTypes.object,
   width: PropTypes.number,
   componentName: PropTypes.string,
-  projectId: PropTypes.number,
 };

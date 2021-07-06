@@ -1,6 +1,7 @@
+import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import NavigateNextRoundedIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import DoneIcon from '@material-ui/icons/Done';
@@ -30,33 +31,31 @@ const useStyles = makeStyles({
   },
   closeButtonGrid: {
     textAlign: 'right',
-    margin: '4px'
+    margin: '4px',
   },
   DialogContainer: {
     width: '320px',
-    paddingBottom: '15px'
+    paddingBottom: '15px',
   },
   replaceButton: {
     marginTop: '3px',
     paddingTop: '2px',
     paddingRight: '8px',
     paddingLeft: '8px',
-    paddingBottom: '2px'
-  }
+    paddingBottom: '2px',
+  },
 });
 
-
-export default function TokenTranslationUpdate(props) {
+export default function TokenEdit(props) {
   const classes = useStyles(props);
-  const projectId = props.projectId;
-  const token = props.tokenDetail.token;
+  const { projectId, onChangeSelector, tokenDetail } = props;
+  const token = tokenDetail.token;
   const [tokenTranslation, setTokenTranslation] = useState('');
   const [occurance, setOccurance] = useState('');
   const [tokenSelected, setTokenSelected] = useState(1);
-  const tokenTranslationCount = props.tokenDetail.occurrences.length;
+  const tokenTranslationCount = tokenDetail.occurrences.length;
   const [responseStatus, setResponseStatus] = React.useState([]);
   const [open, setOpen] = React.useState(false);
-  const { onChangeSelector } = props;
 
   const handleClose = () => {
     setResponseStatus([false]);
@@ -72,17 +71,18 @@ export default function TokenTranslationUpdate(props) {
 
   useEffect(() => {
     onChangeSelector(tokenSelected);
-  }, [tokenSelected])
+  }, [tokenSelected]);
 
   const next = () => {
     if (tokenSelected < tokenTranslationCount) {
       setTokenSelected(tokenSelected + 1);
-      setOccurance(props.tokenDetail.occurrences[tokenSelected]);
-      const sentenceId = props.tokenDetail.occurrences[tokenSelected];
+      setOccurance(tokenDetail.occurrences[tokenSelected]);
+      const sentenceId = tokenDetail.occurrences[tokenSelected];
       const offset1 = sentenceId.offset[0];
       const offset2 = sentenceId.offset[1];
       API.get(
-        `autographa/project/token-translations?project_id=${projectId}&token=${token}&sentence_id=${sentenceId.sentenceId}&offset=${offset1}&offset=${offset2}`)
+        `autographa/project/token-translations?project_id=${projectId}&token=${token}&sentence_id=${sentenceId.sentenceId}&offset=${offset1}&offset=${offset2}`
+      )
         .then(function (response) {
           if (response.data.translation) {
             setTokenTranslation(response.data.translation);
@@ -99,12 +99,13 @@ export default function TokenTranslationUpdate(props) {
   const previous = () => {
     if (tokenSelected > 1) {
       setTokenSelected(tokenSelected - 1);
-      setOccurance(props.tokenDetail.occurrences[tokenSelected - 2]);
-      const sentenceId = props.tokenDetail.occurrences[tokenSelected - 2];
+      setOccurance(tokenDetail.occurrences[tokenSelected - 2]);
+      const sentenceId = tokenDetail.occurrences[tokenSelected - 2];
       const offset1 = sentenceId.offset[0];
       const offset2 = sentenceId.offset[1];
       API.get(
-        `autographa/project/token-translations?project_id=${projectId}&token=${token}&sentence_id=${sentenceId.sentenceId}&offset=${offset1}&offset=${offset2}`)
+        `autographa/project/token-translations?project_id=${projectId}&token=${token}&sentence_id=${sentenceId.sentenceId}&offset=${offset1}&offset=${offset2}`
+      )
         .then(function (response) {
           if (response.data.translation) {
             setTokenTranslation(response.data.translation);
@@ -119,11 +120,12 @@ export default function TokenTranslationUpdate(props) {
   };
 
   useEffect(() => {
-    const sentenceId = props.tokenDetail.occurrences[0];
+    const sentenceId = tokenDetail.occurrences[0];
     const offset1 = sentenceId.offset[0];
     const offset2 = sentenceId.offset[1];
     API.get(
-      `autographa/project/token-translations?project_id=${projectId}&token=${token}&sentence_id=${sentenceId.sentenceId}&offset=${offset1}&offset=${offset2}`)
+      `autographa/project/token-translations?project_id=${projectId}&token=${token}&sentence_id=${sentenceId.sentenceId}&offset=${offset1}&offset=${offset2}`
+    )
       .then(function (response) {
         if (response.data.translation) {
           setTokenTranslation(response.data.translation);
@@ -134,9 +136,8 @@ export default function TokenTranslationUpdate(props) {
       .catch((error) => {
         setResponseStatus([true, 'error', error.response.data.error]);
       });
-    setOccurance(sentenceId)
+    setOccurance(sentenceId);
   }, []);
-
 
   const tokenApiCall = (data) => {
     API.put(`autographa/project/tokens?project_id=${projectId}`, data)
@@ -149,32 +150,43 @@ export default function TokenTranslationUpdate(props) {
       .catch((error) => {
         setResponseStatus([true, 'error', error.response.data.error]);
       });
-  }
+  };
 
   const tokenReplace = (replaceType) => {
     if (replaceType === 'oneToken') {
       const data = [
-        { token: token, occurrences: [occurance], translation: tokenTranslation },
+        {
+          token: token,
+          occurrences: [occurance],
+          translation: tokenTranslation,
+        },
       ];
-      tokenApiCall(data)
+      tokenApiCall(data);
     } else if (replaceType === 'replaceAll') {
-      const allOccurance = props.tokenDetail.occurrences;
+      const allOccurance = tokenDetail.occurrences;
       const data = [
-        { token: token, occurrences: allOccurance, translation: tokenTranslation },
+        {
+          token: token,
+          occurrences: allOccurance,
+          translation: tokenTranslation,
+        },
       ];
       tokenApiCall(data);
       handleDialogClose();
     } else if (replaceType === 'remainingTokens') {
-      const remOccurance = (props.tokenDetail.occurrences).slice(tokenSelected - 1);
+      const remOccurance = tokenDetail.occurrences.slice(tokenSelected - 1);
       const data = [
-        { token: token, occurrences: remOccurance, translation: tokenTranslation },
+        {
+          token: token,
+          occurrences: remOccurance,
+          translation: tokenTranslation,
+        },
       ];
       tokenApiCall(data);
       handleDialogClose();
     } else {
-      console.log("no types")
+      console.log('no types');
     }
-
   };
 
   return (
@@ -186,7 +198,7 @@ export default function TokenTranslationUpdate(props) {
           autoComplete='current-password'
           variant='outlined'
           size='small'
-          value={tokenTranslation ? tokenTranslation : ''}
+          value={tokenTranslation || ''}
           onChange={(e) => setTokenTranslation(e.target.value)}
         />
       </Grid>
@@ -265,9 +277,15 @@ export default function TokenTranslationUpdate(props) {
               </Button>
             </Grid>
             <Grid item md={5} className={classes.tokenReplace}>
-              <Button className={classes.replaceButton} variant='contained' color='primary' size='small' onClick={() => {
-                tokenReplace('replaceAll');
-              }}>
+              <Button
+                className={classes.replaceButton}
+                variant='contained'
+                color='primary'
+                size='small'
+                onClick={() => {
+                  tokenReplace('replaceAll');
+                }}
+              >
                 Replace All
               </Button>
             </Grid>
@@ -277,3 +295,9 @@ export default function TokenTranslationUpdate(props) {
     </Grid>
   );
 }
+TokenEdit.propTypes = {
+  projectId: PropTypes.number.isRequired,
+  tokenDetail: PropTypes.object.isRequired,
+  onChangeSelector: PropTypes.func,
+  buttonText: PropTypes.string,
+};

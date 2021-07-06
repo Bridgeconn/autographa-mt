@@ -56,12 +56,11 @@ export default function BookDropDown(props) {
   const [chapter, setChapter] = React.useState(1);
 
   useEffect(() => {
-    if (selectProject !== undefined) {
+    if (selectProject) {
       API.get(
         `/autographa/project/versification?project_id=${selectProject.projectId}`
       )
         .then((response) => {
-          console.log(response);
           setBooksValue(response.data.maxVerses);
         })
         .catch((err) => console.log(err));
@@ -121,7 +120,7 @@ export default function BookDropDown(props) {
     } else {
       return (
         <Grid item xs={4}>
-          <Typography gutterBottom variant='h10'>
+          <Typography gutterBottom variant='h6'>
             No books uploaded
           </Typography>
         </Grid>
@@ -199,7 +198,7 @@ export default function BookDropDown(props) {
 
 BookDropDown.propTypes = {
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.array.isRequired,
+  value: PropTypes.object,
   width: PropTypes.number,
   selectProject: PropTypes.object,
 };

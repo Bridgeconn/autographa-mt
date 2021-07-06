@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import MUIDataTable from 'mui-datatables';
-import TokenTranslationUpdate from '../TokenTranslationUpdate';
+import TokenEdit from '../TokenEdit';
 import { API } from '../../store/api';
-
 
 const EditToken = ({ currentToken, row, projectId, setOccurance }) => {
   const [show, setShow] = useState(false);
   const [onChangeSelector, setOnChangeSelector] = useState('');
 
+  useEffect(() => {
+    // Add it to the Demo md file to show in the UI, need to get setter from props
+    console.log(onChangeSelector);
+  }, [onChangeSelector]);
   return (
     <div
       style={{ minHeight: 30, minWidth: 200 }}
@@ -16,7 +19,7 @@ const EditToken = ({ currentToken, row, projectId, setOccurance }) => {
       onMouseLeave={() => setShow(false)}
     >
       {currentToken === row[0] ? (
-        <TokenTranslationUpdate
+        <TokenEdit
           tokenDetail={{
             token: row[0],
             occurrences: row[1],

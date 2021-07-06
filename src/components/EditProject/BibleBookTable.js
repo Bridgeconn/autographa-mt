@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({
   root: {
@@ -69,3 +69,6 @@ export default function StickyHeadTable(props) {
     </Paper>
   );
 }
+StickyHeadTable.propTypes = {
+  projectData: PropTypes.object,
+};

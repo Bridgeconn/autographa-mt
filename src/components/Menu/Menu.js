@@ -25,13 +25,6 @@ export default function SimpleMenu(props) {
         aria-haspopup='true'
         onClick={handleClick}
       >
-        Project
-      </Button>
-      <Button
-        aria-controls='simple-menu'
-        aria-haspopup='true'
-        onClick={handleClick}
-      >
         {buttonLabel}
       </Button>
       <Menu

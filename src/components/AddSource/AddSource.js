@@ -29,6 +29,15 @@ export default function AddSource() {
   const addSource = (e) => {
     e.preventDefault();
 
+    if (!language) {
+      setResponseStatus([true, 'error', 'Please select a language']);
+      return;
+    }
+    if (!version) {
+      setResponseStatus([true, 'error', 'Please select a version']);
+      return;
+    }
+
     const data = {
       contentType: 'bible',
       language: language.code,
@@ -56,7 +65,7 @@ export default function AddSource() {
             <ReactSelect
               onChange={(option) => setVersion(option)}
               options={versions}
-              getOptionValue={(option) => option.versionAbbreviation}
+              getOptionValue={(option) => option.versionId}
               getOptionLabel={(option) => option.versionName}
               placeholder={'Select Version'}
               isSearchable

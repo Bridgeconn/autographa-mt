@@ -7,7 +7,7 @@ import { Box, Modal } from '@material-ui/core';
 
 export default function UploadSourceBook(props) {
   const { source } = props;
-  const [loading, setLoading] = useState('');
+  const [loading, setLoading] = useState(false);
   const [responseStatus, setResponseStatus] = useState([]);
   const fileInput = useRef();
   const handleClose = () => {
